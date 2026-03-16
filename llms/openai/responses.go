@@ -3,10 +3,17 @@ package openai
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/openai/internal/openaiclient"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
 )
+
+const tracerName = "github.com/tmc/langchaingo/llms/openai"
 
 // ToolResult is the output of a locally-executed tool call,
 // sent back to the model via SendToolResults.
@@ -29,21 +36,37 @@ type ToolResult struct {
 // protocol processes one response at a time. The 60-minute server-side
 // connection limit is enforced by the server.
 type ResponsesSession struct {
-	session *openaiclient.ResponsesSession
-	model   string // default model from the LLM
+	session     *openaiclient.ResponsesSession
+	model       string // default model from the LLM
+	sessionCtx  context.Context // context carrying the session span
+	sessionSpan trace.Span
 }
 
 // OpenResponsesSession dials a WebSocket connection to the Responses API.
 // The connection stays open until Close() is called or the 60-minute server
 // limit is reached.
 func (o *LLM) OpenResponsesSession(ctx context.Context) (*ResponsesSession, error) {
+	tracer := otel.Tracer(tracerName)
+	ctx, sessionSpan := tracer.Start(ctx, "responses.session",
+		trace.WithAttributes(
+			attribute.String("gen_ai.system", "openai"),
+			attribute.String("gen_ai.request.model", o.model),
+			attribute.String("langsmith.span.kind", "chain"),
+		),
+	)
+
 	session, err := o.client.OpenResponsesSession(ctx)
 	if err != nil {
+		sessionSpan.RecordError(err)
+		sessionSpan.SetStatus(codes.Error, err.Error())
+		sessionSpan.End()
 		return nil, err
 	}
 	return &ResponsesSession{
-		session: session,
-		model:   o.model,
+		session:     session,
+		model:       o.model,
+		sessionCtx:  ctx,
+		sessionSpan: sessionSpan,
 	}, nil
 }
 
@@ -68,6 +91,31 @@ func (s *ResponsesSession) Send(
 		model = s.model
 	}
 
+	tracer := otel.Tracer(tracerName)
+	spanCtx := s.spanContext(ctx)
+	spanCtx, span := tracer.Start(spanCtx, "responses.send",
+		trace.WithAttributes(
+			attribute.String("gen_ai.system", "openai"),
+			attribute.String("gen_ai.operation.name", "chat"),
+			attribute.String("gen_ai.request.model", model),
+			attribute.String("langsmith.span.kind", "llm"),
+		),
+	)
+	defer span.End()
+	_ = spanCtx // span context used only for parenting
+
+	// Record input messages as span attributes.
+	for i, msg := range messages {
+		for _, part := range msg.Parts {
+			if tc, ok := part.(llms.TextContent); ok {
+				span.SetAttributes(
+					attribute.String(fmt.Sprintf("gen_ai.prompt.%d.role", i), string(msg.Role)),
+					attribute.String(fmt.Sprintf("gen_ai.prompt.%d.content", i), tc.Text),
+				)
+			}
+		}
+	}
+
 	// Convert llms.MessageContent to Responses API input items.
 	input := messagesToResponsesInput(messages)
 
@@ -88,7 +136,24 @@ func (s *ResponsesSession) Send(
 
 	result, err := s.session.SendResponse(ctx, req)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
 		return nil, err
+	}
+
+	span.SetAttributes(
+		attribute.Int("gen_ai.usage.input_tokens", result.Usage.InputTokens),
+		attribute.Int("gen_ai.usage.output_tokens", result.Usage.OutputTokens),
+		attribute.String("gen_ai.completion.0.content", result.Content),
+		attribute.String("gen_ai.response.id", result.ResponseID),
+	)
+	if len(result.ToolCalls) > 0 {
+		for i, tc := range result.ToolCalls {
+			span.SetAttributes(
+				attribute.String(fmt.Sprintf("gen_ai.completion.tool_calls.%d.name", i), tc.Name),
+				attribute.String(fmt.Sprintf("gen_ai.completion.tool_calls.%d.arguments", i), tc.Arguments),
+			)
+		}
 	}
 
 	return responsesResultToContentResponse(result), nil
@@ -112,6 +177,19 @@ func (s *ResponsesSession) SendToolResults(
 		model = s.model
 	}
 
+	tracer := otel.Tracer(tracerName)
+	spanCtx := s.spanContext(ctx)
+	spanCtx, span := tracer.Start(spanCtx, "responses.send_tool_results",
+		trace.WithAttributes(
+			attribute.String("gen_ai.system", "openai"),
+			attribute.String("gen_ai.operation.name", "chat"),
+			attribute.String("gen_ai.request.model", model),
+			attribute.String("langsmith.span.kind", "llm"),
+		),
+	)
+	defer span.End()
+	_ = spanCtx
+
 	input := make([]openaiclient.ResponsesInputItem, len(results))
 	for i, r := range results {
 		input[i] = openaiclient.ResponsesInputItem{
@@ -119,6 +197,10 @@ func (s *ResponsesSession) SendToolResults(
 			CallID: r.CallID,
 			Output: r.Output,
 		}
+		span.SetAttributes(
+			attribute.String(fmt.Sprintf("gen_ai.tool_result.%d.call_id", i), r.CallID),
+			attribute.String(fmt.Sprintf("gen_ai.tool_result.%d.output", i), r.Output),
+		)
 	}
 
 	tools := convertTools(opts.Tools)
@@ -137,8 +219,17 @@ func (s *ResponsesSession) SendToolResults(
 
 	result, err := s.session.SendResponse(ctx, req)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
 		return nil, err
 	}
+
+	span.SetAttributes(
+		attribute.Int("gen_ai.usage.input_tokens", result.Usage.InputTokens),
+		attribute.Int("gen_ai.usage.output_tokens", result.Usage.OutputTokens),
+		attribute.String("gen_ai.completion.0.content", result.Content),
+		attribute.String("gen_ai.response.id", result.ResponseID),
+	)
 
 	return responsesResultToContentResponse(result), nil
 }
@@ -155,9 +246,21 @@ func (s *ResponsesSession) LastResponseID() string {
 	return s.session.LastResponseID()
 }
 
-// Close closes the WebSocket connection.
+// Close closes the WebSocket connection and ends the session trace span.
 func (s *ResponsesSession) Close() error {
+	if s.sessionSpan != nil {
+		s.sessionSpan.End()
+	}
 	return s.session.Close()
+}
+
+// spanContext returns a context that carries the session span as parent,
+// so child spans (Send, SendToolResults) are nested under the session.
+func (s *ResponsesSession) spanContext(ctx context.Context) context.Context {
+	if s.sessionSpan != nil {
+		return trace.ContextWithSpan(ctx, s.sessionSpan)
+	}
+	return ctx
 }
 
 // SetRecorder sets a message recorder on the session for testing.
