@@ -1,0 +1,94 @@
+httprr trace v1
+371 3332
+POST https://api.openai.com/v1/chat/completions HTTP/1.1
+Host: api.openai.com
+User-Agent: langchaingo-httprr
+Content-Length: 169
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"gpt-4o-search-preview","messages":[{"role":"user","content":"What is the current population of Tokyo?"}],"web_search_options":{"search_context_size":"medium"}}HTTP/2.0 200 OK
+Content-Length: 2574
+Access-Control-Expose-Headers: X-Request-ID
+Alt-Svc: h3=":443"; ma=86400
+Cf-Cache-Status: DYNAMIC
+Content-Type: application/json
+Date: Sun, 15 Mar 2026 23:56:49 GMT
+Openai-Organization: lcgo-tst
+Openai-Processing-Ms: 11464
+Openai-Project: proj_DjwsbwdW64kBVMob3U4Qga5Q
+Openai-Version: 2020-10-01
+Server: cloudflare
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Openai-Proxy-Wasm: v0.1
+X-Ratelimit-Limit-Requests: 500
+X-Ratelimit-Limit-Tokens: 45000
+X-Ratelimit-Remaining-Requests: 499
+X-Ratelimit-Remaining-Tokens: 44988
+X-Ratelimit-Reset-Requests: 120ms
+X-Ratelimit-Reset-Tokens: 16ms
+X-Request-Id: req_97ab3be1b0fb4ddbbecb3ad5b1fe86df
+
+{
+  "id": "chatcmpl-dd132868-549f-4722-b032-2a92f04d194b",
+  "object": "chat.completion",
+  "created": 1773618998,
+  "model": "gpt-4o-search-preview-2025-03-11",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "As of 2026, Tokyo's population varies depending on the area considered:\n\n- **Tokyo Metropolis (Tokyo Prefecture):** Approximately 14.2 million residents. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Demographics_of_Tokyo?utm_source=openai))\n\n- **Tokyo Metropolitan Area (including neighboring prefectures):** Around 33.4 million people. ([nippon.com](https://www.nippon.com/en/japan-data/h02639/?utm_source=openai))\n\n- **Greater Tokyo Area:** Approximately 37 million residents. ([macrotrends.net](https://www.macrotrends.net/global-metrics/cities/21671/tokyo/population?utm_source=openai))\n\nThese figures reflect Tokyo's status as one of the world's largest urban areas, though its population has been experiencing a gradual decline in recent years. ",
+        "refusal": null,
+        "annotations": [
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 245,
+              "start_index": 154,
+              "title": "Demographics of Tokyo",
+              "url": "https://en.wikipedia.org/wiki/Demographics_of_Tokyo?utm_source=openai"
+            }
+          },
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 420,
+              "start_index": 342,
+              "title": "Tokyo Third in UN Ranking of Global Megacities at 33.4 Million | Nippon.com",
+              "url": "https://www.nippon.com/en/japan-data/h02639/?utm_source=openai"
+            }
+          },
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 595,
+              "start_index": 484,
+              "title": "Tokyo, Japan Metro Area Population (1950-2026) | MacroTrends",
+              "url": "https://www.macrotrends.net/global-metrics/cities/21671/tokyo/population?utm_source=openai"
+            }
+          }
+        ]
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 8,
+    "completion_tokens": 178,
+    "total_tokens": 186,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "system_fingerprint": ""
+}

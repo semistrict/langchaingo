@@ -141,8 +141,12 @@ func isReasoningModel(model string) bool {
 	if model == "o3" || strings.HasPrefix(model, "o3-") {
 		return true
 	}
-	// GPT-5 series (when released)
+	// GPT-5 series
 	if strings.HasPrefix(model, "gpt-5") {
+		return true
+	}
+	// Search-preview models don't accept temperature
+	if strings.Contains(model, "search-preview") {
 		return true
 	}
 	return false
