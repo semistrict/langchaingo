@@ -179,3 +179,56 @@ func TestFunctionCall(t *testing.T) {
 	assert.Equal(t, "tool_calls", c1.StopReason)
 	assert.NotNil(t, c1.FuncCall)
 }
+
+func TestWebSearch(t *testing.T) {
+	ctx := context.Background()
+	llm := newTestClient(t, WithModel("gpt-4o-search-preview"))
+
+	content := []llms.MessageContent{
+		{
+			Role:  llms.ChatMessageTypeHuman,
+			Parts: []llms.ContentPart{llms.TextPart("What is the current population of Tokyo?")},
+		},
+	}
+
+	rsp, err := llm.GenerateContent(ctx, content,
+		llms.WithWebSearch(&llms.WebSearchOptions{
+			SearchContextSize: "medium",
+		}))
+	require.NoError(t, err)
+
+	assert.NotEmpty(t, rsp.Choices)
+	c1 := rsp.Choices[0]
+	assert.Regexp(t, "tokyo", strings.ToLower(c1.Content))
+	assert.Regexp(t, `\d+`, c1.Content) // should contain population numbers
+}
+
+func TestWebSearchWithUserLocation(t *testing.T) {
+	ctx := context.Background()
+	llm := newTestClient(t, WithModel("gpt-4o-search-preview"))
+
+	content := []llms.MessageContent{
+		{
+			Role:  llms.ChatMessageTypeHuman,
+			Parts: []llms.ContentPart{llms.TextPart("What are the top local news headlines today?")},
+		},
+	}
+
+	rsp, err := llm.GenerateContent(ctx, content,
+		llms.WithWebSearch(&llms.WebSearchOptions{
+			SearchContextSize: "high",
+			UserLocation: &llms.UserLocation{
+				Type: "approximate",
+				Approximate: &llms.ApproximateLocation{
+					Country: "US",
+					City:    "San Francisco",
+					Region:  "California",
+				},
+			},
+		}))
+	require.NoError(t, err)
+
+	assert.NotEmpty(t, rsp.Choices)
+	c1 := rsp.Choices[0]
+	assert.NotEmpty(t, c1.Content)
+}

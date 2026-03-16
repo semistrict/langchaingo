@@ -190,6 +190,17 @@ func (c *Client) setHeaders(req *http.Request) {
 	}
 }
 
+// OpenResponsesSession opens a persistent WebSocket connection to the
+// OpenAI Responses API.
+func (c *Client) OpenResponsesSession(ctx context.Context) (*ResponsesSession, error) {
+	// Convert REST base URL to WebSocket URL.
+	// https://api.openai.com/v1 -> wss://api.openai.com/v1/responses
+	wsURL := c.baseURL + "/responses"
+	wsURL = strings.Replace(wsURL, "https://", "wss://", 1)
+	wsURL = strings.Replace(wsURL, "http://", "ws://", 1)
+	return DialResponsesSession(ctx, wsURL, c.token)
+}
+
 func (c *Client) buildURL(suffix string, model string) string {
 	if IsAzure(c.apiType) {
 		return c.buildAzureURL(suffix, model)

@@ -1,0 +1,121 @@
+httprr trace v1
+488 6280
+POST https://api.openai.com/v1/chat/completions HTTP/1.1
+Host: api.openai.com
+User-Agent: langchaingo-httprr
+Content-Length: 286
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"gpt-4o-search-preview","messages":[{"role":"user","content":"What are the top local news headlines today?"}],"web_search_options":{"search_context_size":"high","user_location":{"type":"approximate","approximate":{"country":"US","city":"San Francisco","region":"California"}}}}HTTP/2.0 200 OK
+Content-Length: 5522
+Access-Control-Expose-Headers: X-Request-ID
+Alt-Svc: h3=":443"; ma=86400
+Cf-Cache-Status: DYNAMIC
+Content-Type: application/json
+Date: Sun, 15 Mar 2026 23:57:19 GMT
+Openai-Organization: lcgo-tst
+Openai-Processing-Ms: 23833
+Openai-Project: proj_DjwsbwdW64kBVMob3U4Qga5Q
+Openai-Version: 2020-10-01
+Server: cloudflare
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Openai-Proxy-Wasm: v0.1
+X-Ratelimit-Limit-Requests: 500
+X-Ratelimit-Limit-Tokens: 45000
+X-Ratelimit-Remaining-Requests: 499
+X-Ratelimit-Remaining-Tokens: 44987
+X-Ratelimit-Reset-Requests: 120ms
+X-Ratelimit-Reset-Tokens: 17ms
+X-Request-Id: req_38a6c4ddc2b648f3beacc6262254a60d
+
+{
+  "id": "chatcmpl-57b0e25b-147e-4afa-b90c-e6447da35ff3",
+  "object": "chat.completion",
+  "created": 1773619015,
+  "model": "gpt-4o-search-preview-2025-03-11",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "As of Sunday, March 15, 2026, here are the top local news headlines in San Francisco:\n\n**1. Castro Theatre Reopens After Extensive Renovation**\n\nThe historic Castro Theatre has reopened following a $41 million renovation. The theater now features updated sound and lighting systems, improved seating, and restored architectural details. The reopening was marked by a ribbon-cutting ceremony and a benefit screening of \"The Adventures of Priscilla, Queen of the Desert.\" ([en.wikipedia.org](https://en.wikipedia.org/wiki/Castro_Theatre?utm_source=openai))\n\n**2. Sunset Dunes Park Celebrates First Anniversary**\n\nSunset Dunes, San Francisco's 77-acre coastal park, celebrates its first anniversary this month. The park, which transformed a portion of the Great Highway into a recreational area, has become a popular destination for residents and visitors, offering walking and cycling paths, art installations, and scenic ocean views. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Sunset_Dunes?utm_source=openai))\n\n**3. Plans for New Tallest Building in San Francisco Proposed**\n\nA proposal has been submitted for a new skyscraper at 77 Beale Street, which, if approved, would become the tallest building in San Francisco at 1,225 feet. The development aims to include office spaces, residential units, and public amenities, further transforming the city's skyline. ([en.wikipedia.org](https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_San_Francisco?utm_source=openai))\n\n**4. Bay Lights 360 Installation Delayed**\n\nThe reinstallation of the Bay Lights, a monumental light sculpture on the Bay Bridge, has been delayed due to technical issues. Originally set to relaunch in March 2025, the project now aims for completion later this year, featuring 50,000 LED lights in a new configuration known as Bay Lights 360. ([en.wikipedia.org](https://en.wikipedia.org/wiki/The_Bay_Lights?utm_source=openai))\n\n**5. San Francisco Hosts Major Tech Conferences**\n\nSan Francisco is set to host several prominent technology conferences this month, including the RSA Conference (RSAC) from March 23–26, focusing on cybersecurity, and NVIDIA GTC 2026 from March 16–19 in San Jose, highlighting advancements in artificial intelligence. These events are expected to draw thousands of industry professionals to the Bay Area. ([techradar.com](https://www.techradar.com/news/top-tech-conferences-the-ultimate-tech-events-and-show-guide?utm_source=openai))\n\n\n## Highlights:\n- [Top tech conferences: The ultimate tech events guide for March 2026](https://www.techradar.com/news/top-tech-conferences-the-ultimate-tech-events-and-show-guide?utm_source=openai), Published on Monday, March 09 ",
+        "refusal": null,
+        "annotations": [
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 554,
+              "start_index": 470,
+              "title": "Castro Theatre",
+              "url": "https://en.wikipedia.org/wiki/Castro_Theatre?utm_source=openai"
+            }
+          },
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 1015,
+              "start_index": 933,
+              "title": "Sunset Dunes",
+              "url": "https://en.wikipedia.org/wiki/Sunset_Dunes?utm_source=openai"
+            }
+          },
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 1480,
+              "start_index": 1368,
+              "title": "List of tallest buildings in San Francisco",
+              "url": "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_San_Francisco?utm_source=openai"
+            }
+          },
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 1909,
+              "start_index": 1825,
+              "title": "The Bay Lights",
+              "url": "https://en.wikipedia.org/wiki/The_Bay_Lights?utm_source=openai"
+            }
+          },
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 2444,
+              "start_index": 2316,
+              "title": "Top tech conferences: The ultimate tech events guide for March 2026",
+              "url": "https://www.techradar.com/news/top-tech-conferences-the-ultimate-tech-events-and-show-guide?utm_source=openai"
+            }
+          },
+          {
+            "type": "url_citation",
+            "url_citation": {
+              "end_index": 2644,
+              "start_index": 2464,
+              "title": "Top tech conferences: The ultimate tech events guide for March 2026",
+              "url": "https://www.techradar.com/news/top-tech-conferences-the-ultimate-tech-events-and-show-guide?utm_source=openai"
+            }
+          }
+        ]
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 9,
+    "completion_tokens": 575,
+    "total_tokens": 584,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "system_fingerprint": ""
+}
