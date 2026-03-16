@@ -83,7 +83,7 @@ func TestResponsesSession_BasicChat(t *testing.T) {
 	wsURL := "ws" + strings.TrimPrefix(srv.URL, "http")
 
 	ctx := t.Context()
-	session, err := DialResponsesSession(ctx, wsURL, "test-token")
+	session, err := DialResponsesSession(ctx, wsURL, "test-token", nil)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}
@@ -152,7 +152,7 @@ func TestResponsesSession_ToolCall(t *testing.T) {
 	wsURL := "ws" + strings.TrimPrefix(srv.URL, "http")
 
 	ctx := t.Context()
-	session, err := DialResponsesSession(ctx, wsURL, "test-token")
+	session, err := DialResponsesSession(ctx, wsURL, "test-token", nil)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}
@@ -265,7 +265,7 @@ func TestResponsesSession_AutoChaining(t *testing.T) {
 	wsURL := "ws" + strings.TrimPrefix(srv.URL, "http")
 
 	ctx := t.Context()
-	session, err := DialResponsesSession(ctx, wsURL, "test-token")
+	session, err := DialResponsesSession(ctx, wsURL, "test-token", nil)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}
@@ -332,7 +332,7 @@ func TestResponsesSession_Streaming(t *testing.T) {
 	wsURL := "ws" + strings.TrimPrefix(srv.URL, "http")
 
 	ctx := t.Context()
-	session, err := DialResponsesSession(ctx, wsURL, "test-token")
+	session, err := DialResponsesSession(ctx, wsURL, "test-token", nil)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}
@@ -383,7 +383,7 @@ func TestResponsesSession_ErrorEvent(t *testing.T) {
 	wsURL := "ws" + strings.TrimPrefix(srv.URL, "http")
 
 	ctx := t.Context()
-	session, err := DialResponsesSession(ctx, wsURL, "test-token")
+	session, err := DialResponsesSession(ctx, wsURL, "test-token", nil)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}
@@ -460,7 +460,7 @@ func TestResponsesSession_ResetChain(t *testing.T) {
 	wsURL := "ws" + strings.TrimPrefix(srv.URL, "http")
 
 	ctx := t.Context()
-	session, err := DialResponsesSession(ctx, wsURL, "test-token")
+	session, err := DialResponsesSession(ctx, wsURL, "test-token", nil)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}

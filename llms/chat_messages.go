@@ -66,6 +66,10 @@ type AIChatMessage struct {
 
 	// This field is only used with the deepseek-reasoner model and represents the reasoning contents of the assistant message before the final answer.
 	ReasoningContent string `json:"reasoning_content,omitempty"`
+
+	// ID is the response ID, threaded through to MessageContent.ID for
+	// server-side context caching in stateful sessions.
+	ID string `json:"id,omitempty"`
 }
 
 func (m AIChatMessage) GetType() ChatMessageType       { return ChatMessageTypeAI }

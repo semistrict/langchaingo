@@ -543,7 +543,9 @@ func (c *Client) createChat(ctx context.Context, payload *ChatRequest) (*ChatCom
 		return nil, err
 	}
 
-	c.setHeaders(req)
+	if err := c.setHeaders(req); err != nil {
+		return nil, err
+	}
 
 	// Send request
 	r, err := c.httpClient.Do(req)

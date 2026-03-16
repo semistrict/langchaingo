@@ -1,0 +1,94 @@
+httprr trace v1
+440 8410
+POST https://chatgpt.com/backend-api/codex/responses HTTP/1.1
+Host: chatgpt.com
+User-Agent: langchaingo-httprr
+Content-Length: 236
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"gpt-5.4","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What is the capital of France? One sentence."}]}],"instructions":"You are a helpful assistant. Be concise.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 6582
+Alt-Svc: h3=":443"; ma=86400
+Cf-Cache-Status: DYNAMIC
+Cross-Origin-Opener-Policy: same-origin-allow-popups
+Date: Mon, 16 Mar 2026 13:37:08 GMT
+Nel: {"report_to":"cf-nel","success_fraction":0.01,"max_age":604800}
+Referrer-Policy: strict-origin-when-cross-origin
+Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=jkPP6Qd%2BroviQAyuqj5mfl4vY4qNNsnkN9HZPDP8l7MeOQMZzbuF2ZgGzlXXFYz96Tiw8jhSmFu7%2BoQwIFZR5JQRiszcSg5I%2FRFzLZAKYmYiMST8srM%3D"}]}
+Server: cloudflare
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Codex-Active-Limit: codex
+X-Codex-Bengalfox-Limit-Name: GPT-5.3-Codex-Spark
+X-Codex-Bengalfox-Primary-Over-Secondary-Limit-Percent: 0
+X-Codex-Bengalfox-Primary-Reset-After-Seconds: 18000
+X-Codex-Bengalfox-Primary-Reset-At: 1773686228
+X-Codex-Bengalfox-Primary-Used-Percent: 0
+X-Codex-Bengalfox-Primary-Window-Minutes: 300
+X-Codex-Bengalfox-Secondary-Reset-After-Seconds: 209816
+X-Codex-Bengalfox-Secondary-Reset-At: 1773878043
+X-Codex-Bengalfox-Secondary-Used-Percent: 4
+X-Codex-Bengalfox-Secondary-Window-Minutes: 10080
+X-Codex-Credits-Balance: 
+X-Codex-Credits-Has-Credits: False
+X-Codex-Credits-Unlimited: False
+X-Codex-Plan-Type: pro
+X-Codex-Primary-Over-Secondary-Limit-Percent: 0
+X-Codex-Primary-Reset-After-Seconds: 17512
+X-Codex-Primary-Reset-At: 1773685739
+X-Codex-Primary-Used-Percent: 0
+X-Codex-Primary-Window-Minutes: 300
+X-Codex-Secondary-Reset-After-Seconds: 185267
+X-Codex-Secondary-Reset-At: 1773853494
+X-Codex-Secondary-Used-Percent: 54
+X-Codex-Secondary-Window-Minutes: 10080
+X-Content-Type-Options: nosniff
+X-Models-Etag: W/"110fb5d1363bb785ba213517a3fdf322"
+X-Oai-Request-Id: 0b559789-34b6-4dcb-8890-a0e5c6b63b85
+X-Openai-Proxy-Wasm: v0.1
+
+event: response.created
+data: {"type":"response.created","response":{"id":"resp_09ea592eb2d221990169b807841740819da7b144a58de0bb2e","object":"response","created_at":1773668228,"status":"in_progress","background":false,"completed_at":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":"You are a helpful assistant. Be concise.","max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5.4","output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":"d17a13d6-a5c9-4efb-a5de-e05ea5b1186e","prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":"user-W6M5MwmoXWnHPeFCO7dfxQoj","service_tier":"auto","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":0.98,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":0}
+
+event: response.in_progress
+data: {"type":"response.in_progress","response":{"id":"resp_09ea592eb2d221990169b807841740819da7b144a58de0bb2e","object":"response","created_at":1773668228,"status":"in_progress","background":false,"completed_at":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":"You are a helpful assistant. Be concise.","max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5.4","output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":"d17a13d6-a5c9-4efb-a5de-e05ea5b1186e","prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":"user-W6M5MwmoXWnHPeFCO7dfxQoj","service_tier":"auto","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":0.98,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":1}
+
+event: response.output_item.added
+data: {"type":"response.output_item.added","item":{"id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","type":"message","status":"in_progress","content":[],"phase":"final_answer","role":"assistant"},"output_index":0,"sequence_number":2}
+
+event: response.content_part.added
+data: {"type":"response.content_part.added","content_index":0,"item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","output_index":0,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":""},"sequence_number":3}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":"The","item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"obfuscation":"tt55K4EEAx9BI","output_index":0,"sequence_number":4}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" capital","item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"obfuscation":"HI5xWW1k","output_index":0,"sequence_number":5}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" of","item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"obfuscation":"QRymPKJ3uVKLQ","output_index":0,"sequence_number":6}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" France","item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"obfuscation":"sHMoZ7sCt","output_index":0,"sequence_number":7}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" is","item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"obfuscation":"7aZrzXxtnSK9v","output_index":0,"sequence_number":8}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":" Paris","item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"obfuscation":"bRoNXAnHHL","output_index":0,"sequence_number":9}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","content_index":0,"delta":".","item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"obfuscation":"46y3Y1Lb2C0eKID","output_index":0,"sequence_number":10}
+
+event: response.output_text.done
+data: {"type":"response.output_text.done","content_index":0,"item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","logprobs":[],"output_index":0,"sequence_number":11,"text":"The capital of France is Paris."}
+
+event: response.content_part.done
+data: {"type":"response.content_part.done","content_index":0,"item_id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","output_index":0,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":"The capital of France is Paris."},"sequence_number":12}
+
+event: response.output_item.done
+data: {"type":"response.output_item.done","item":{"id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","type":"message","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"The capital of France is Paris."}],"phase":"final_answer","role":"assistant"},"output_index":0,"sequence_number":13}
+
+event: response.completed
+data: {"type":"response.completed","response":{"id":"resp_09ea592eb2d221990169b807841740819da7b144a58de0bb2e","object":"response","created_at":1773668228,"status":"completed","background":false,"completed_at":1773668228,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":"You are a helpful assistant. Be concise.","max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5.4","output":[{"id":"msg_09ea592eb2d221990169b807847f24819d85190ad663312688","type":"message","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"The capital of France is Paris."}],"phase":"final_answer","role":"assistant"}],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":"d17a13d6-a5c9-4efb-a5de-e05ea5b1186e","prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":"user-W6M5MwmoXWnHPeFCO7dfxQoj","service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":0.98,"truncation":"disabled","usage":{"input_tokens":29,"input_tokens_details":{"cached_tokens":0},"output_tokens":11,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":40},"user":null,"metadata":{}},"sequence_number":14}
+

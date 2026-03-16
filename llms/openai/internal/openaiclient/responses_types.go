@@ -10,6 +10,7 @@ type ResponsesCreateRequest struct {
 	Input              []ResponsesInputItem  `json:"input"`
 	Tools              []ResponsesTool       `json:"tools,omitempty"`
 	PreviousResponseID string               `json:"previous_response_id,omitempty"`
+	Instructions       string               `json:"instructions,omitempty"`
 	Store              *bool                `json:"store,omitempty"`
 	ReasoningEffort    string               `json:"reasoning_effort,omitempty"`
 	StreamingFunc      func([]byte) error   `json:"-"`

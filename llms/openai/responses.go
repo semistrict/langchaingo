@@ -22,23 +22,46 @@ type ToolResult struct {
 	Output string // the tool's output as a string
 }
 
-// ResponsesSession is a persistent WebSocket connection to the OpenAI
-// Responses API. It maintains connection state across multiple turns,
-// enabling low-latency multi-turn conversations where only incremental
-// inputs are sent per turn.
+// responseSender abstracts how responses are sent — via WebSocket or HTTP.
+type responseSender interface {
+	SendResponse(ctx context.Context, req *openaiclient.ResponsesCreateRequest) (*openaiclient.ResponsesResult, error)
+	Close() error
+}
+
+// httpResponseSender sends responses via HTTP POST with SSE streaming.
+// Unlike the WebSocket sender, this does NOT auto-chain responses —
+// the caller must explicitly set PreviousResponseID on the request
+// (via MessageContent.ID) if the backend supports it.
+type httpResponseSender struct {
+	client     *openaiclient.Client
+	lastRespID string
+}
+
+func (h *httpResponseSender) SendResponse(ctx context.Context, req *openaiclient.ResponsesCreateRequest) (*openaiclient.ResponsesResult, error) {
+	result, err := h.client.SendResponseHTTP(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	h.lastRespID = result.ResponseID
+	return result, nil
+}
+
+func (h *httpResponseSender) Close() error { return nil }
+
+// ResponsesSession is a connection to the OpenAI Responses API.
+// It supports two transports:
+//   - WebSocket (persistent connection, used with OpenAI API)
+//   - HTTP POST with SSE (used with ChatGPT backend)
 //
 // A session automatically chains responses: each Send/SendToolResults call
 // sets previous_response_id from the last successful response, so the server
 // reuses cached context. Call ResetChain() to start a fresh conversation
 // on the same connection.
-//
-// The session is safe for sequential use but not concurrent — the WebSocket
-// protocol processes one response at a time. The 60-minute server-side
-// connection limit is enforced by the server.
 type ResponsesSession struct {
-	session     *openaiclient.ResponsesSession
-	model       string // default model from the LLM
-	sessionCtx  context.Context // context carrying the session span
+	sender      responseSender
+	session     *openaiclient.ResponsesSession // non-nil for WebSocket transport
+	model       string                         // default model from the LLM
+	sessionCtx  context.Context                // context carrying the session span
 	sessionSpan trace.Span
 }
 
@@ -63,7 +86,29 @@ func (o *LLM) OpenResponsesSession(ctx context.Context) (*ResponsesSession, erro
 		return nil, err
 	}
 	return &ResponsesSession{
+		sender:      session,
 		session:     session,
+		model:       o.model,
+		sessionCtx:  ctx,
+		sessionSpan: sessionSpan,
+	}, nil
+}
+
+// OpenResponsesHTTPSession creates a session that uses HTTP POST with SSE
+// streaming for the Responses API. This is used for backends that don't
+// support WebSocket (e.g., the ChatGPT backend at chatgpt.com).
+func (o *LLM) OpenResponsesHTTPSession(ctx context.Context) (*ResponsesSession, error) {
+	tracer := otel.Tracer(tracerName)
+	ctx, sessionSpan := tracer.Start(ctx, "responses.session",
+		trace.WithAttributes(
+			attribute.String("gen_ai.system", "openai"),
+			attribute.String("gen_ai.request.model", o.model),
+			attribute.String("langsmith.span.kind", "chain"),
+		),
+	)
+
+	return &ResponsesSession{
+		sender:      &httpResponseSender{client: o.client},
 		model:       o.model,
 		sessionCtx:  ctx,
 		sessionSpan: sessionSpan,
@@ -116,16 +161,16 @@ func (s *ResponsesSession) Send(
 		}
 	}
 
-	// Convert llms.MessageContent to Responses API input items.
-	input := messagesToResponsesInput(messages)
-
-	// Convert llms tools to Responses API tools.
+	// Extract system messages as instructions for the Responses API.
+	instructions, filtered := extractInstructions(messages)
+	input := messagesToResponsesInput(filtered)
 	tools := convertTools(opts.Tools)
 
 	req := &openaiclient.ResponsesCreateRequest{
-		Model: model,
-		Input: input,
-		Tools: tools,
+		Model:        model,
+		Input:        input,
+		Tools:        tools,
+		Instructions: instructions,
 	}
 
 	if opts.StreamingFunc != nil {
@@ -134,7 +179,7 @@ func (s *ResponsesSession) Send(
 		}
 	}
 
-	result, err := s.session.SendResponse(ctx, req)
+	result, err := s.sender.SendResponse(ctx, req)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
@@ -217,7 +262,7 @@ func (s *ResponsesSession) SendToolResults(
 		}
 	}
 
-	result, err := s.session.SendResponse(ctx, req)
+	result, err := s.sender.SendResponse(ctx, req)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
@@ -235,23 +280,123 @@ func (s *ResponsesSession) SendToolResults(
 }
 
 // ResetChain clears the previous_response_id, so the next Send starts
-// a fresh conversation on the same WebSocket connection.
+// a fresh conversation on the same connection.
 func (s *ResponsesSession) ResetChain() {
-	s.session.ResetChain()
+	if s.session != nil {
+		s.session.ResetChain()
+	}
+	if h, ok := s.sender.(*httpResponseSender); ok {
+		h.lastRespID = ""
+	}
 }
 
 // LastResponseID returns the ID of the most recent response, useful for
 // manual chaining or debugging.
 func (s *ResponsesSession) LastResponseID() string {
-	return s.session.LastResponseID()
+	if s.session != nil {
+		return s.session.LastResponseID()
+	}
+	if h, ok := s.sender.(*httpResponseSender); ok {
+		return h.lastRespID
+	}
+	return ""
 }
 
-// Close closes the WebSocket connection and ends the session trace span.
+// Compile-time check that ResponsesSession implements llms.Model.
+var _ llms.Model = (*ResponsesSession)(nil)
+
+// GenerateContent implements llms.Model. It sends messages via the Responses
+// API (WebSocket or HTTP). Use llms.WithPreviousResponseID to chain requests
+// for server-side context caching on backends that support it.
+func (s *ResponsesSession) GenerateContent(
+	ctx context.Context,
+	messages []llms.MessageContent,
+	options ...llms.CallOption,
+) (*llms.ContentResponse, error) {
+	opts := llms.CallOptions{}
+	for _, opt := range options {
+		opt(&opts)
+	}
+
+	model := opts.Model
+	if model == "" {
+		model = s.model
+	}
+
+	// Extract system messages as instructions for the Responses API.
+	instructions, filtered := extractInstructions(messages)
+	input := messagesToResponsesInput(filtered)
+	tools := convertTools(opts.Tools)
+
+	req := &openaiclient.ResponsesCreateRequest{
+		Model:              model,
+		Input:              input,
+		Tools:              tools,
+		Instructions:       instructions,
+		PreviousResponseID: opts.PreviousResponseID,
+	}
+
+	if opts.StreamingFunc != nil {
+		req.StreamingFunc = func(chunk []byte) error {
+			return opts.StreamingFunc(ctx, chunk)
+		}
+	}
+
+	// OTel tracing.
+	tracer := otel.Tracer(tracerName)
+	spanCtx := s.spanContext(ctx)
+	spanCtx, span := tracer.Start(spanCtx, "responses.generate_content",
+		trace.WithAttributes(
+			attribute.String("gen_ai.system", "openai"),
+			attribute.String("gen_ai.operation.name", "chat"),
+			attribute.String("gen_ai.request.model", model),
+			attribute.String("langsmith.span.kind", "llm"),
+		),
+	)
+	defer span.End()
+	_ = spanCtx
+
+	result, err := s.sender.SendResponse(ctx, req)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+		return nil, err
+	}
+
+	span.SetAttributes(
+		attribute.Int("gen_ai.usage.input_tokens", result.Usage.InputTokens),
+		attribute.Int("gen_ai.usage.output_tokens", result.Usage.OutputTokens),
+		attribute.String("gen_ai.response.id", result.ResponseID),
+	)
+
+	resp := responsesResultToContentResponse(result)
+	if len(resp.Choices) > 0 {
+		resp.Choices[0].ID = result.ResponseID
+	}
+	return resp, nil
+}
+
+// Call implements llms.Model. It sends a single text prompt and returns
+// the model's text response.
+func (s *ResponsesSession) Call(ctx context.Context, prompt string, options ...llms.CallOption) (string, error) {
+	resp, err := s.GenerateContent(ctx, []llms.MessageContent{
+		{Role: llms.ChatMessageTypeHuman, Parts: []llms.ContentPart{llms.TextContent{Text: prompt}}},
+	}, options...)
+	if err != nil {
+		return "", err
+	}
+	if len(resp.Choices) == 0 {
+		return "", fmt.Errorf("empty response from model")
+	}
+	return resp.Choices[0].Content, nil
+}
+
+// Close closes the connection and ends the session trace span.
 func (s *ResponsesSession) Close() error {
 	if s.sessionSpan != nil {
 		s.sessionSpan.End()
 	}
-	return s.session.Close()
+	return s.sender.Close()
 }
 
 // spanContext returns a context that carries the session span as parent,
@@ -264,8 +409,39 @@ func (s *ResponsesSession) spanContext(ctx context.Context) context.Context {
 }
 
 // SetRecorder sets a message recorder on the session for testing.
+// Only works with WebSocket-based sessions.
 func (s *ResponsesSession) SetRecorder(r openaiclient.MessageRecorder) {
-	s.session.SetRecorder(r)
+	if s.session != nil {
+		s.session.SetRecorder(r)
+	}
+}
+
+// extractInstructions pulls system messages out of the message list and
+// concatenates them into a single instructions string. The remaining non-system
+// messages are returned. The Responses API uses an "instructions" field
+// instead of system messages in the input array.
+func extractInstructions(messages []llms.MessageContent) (string, []llms.MessageContent) {
+	var instructions []string
+	var remaining []llms.MessageContent
+	for _, msg := range messages {
+		if msg.Role == llms.ChatMessageTypeSystem {
+			for _, part := range msg.Parts {
+				if tc, ok := part.(llms.TextContent); ok {
+					instructions = append(instructions, tc.Text)
+				}
+			}
+		} else {
+			remaining = append(remaining, msg)
+		}
+	}
+	if len(instructions) == 0 {
+		return "", messages
+	}
+	joined := instructions[0]
+	for _, s := range instructions[1:] {
+		joined += "\n" + s
+	}
+	return joined, remaining
 }
 
 // messagesToResponsesInput converts llms.MessageContent to Responses API input items.
@@ -297,12 +473,17 @@ func messagesToResponsesInput(messages []llms.MessageContent) []openaiclient.Res
 		}
 
 		// Build text content.
+		// Assistant messages use "output_text"; user/system use "input_text".
+		contentType := "input_text"
+		if msg.Role == llms.ChatMessageTypeAI {
+			contentType = "output_text"
+		}
 		var content []openaiclient.ResponsesContent
 		for _, part := range msg.Parts {
 			switch p := part.(type) {
 			case llms.TextContent:
 				content = append(content, openaiclient.ResponsesContent{
-					Type: "input_text",
+					Type: contentType,
 					Text: p.Text,
 				})
 			}

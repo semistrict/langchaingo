@@ -25,14 +25,19 @@ const (
 	APITypeAzureAD APIType = "AZURE_AD"
 )
 
+// TokenProvider returns a fresh token and optional extra HTTP headers.
+// It is called before each request, allowing token refresh for OAuth flows.
+type TokenProvider func() (token string, extraHeaders http.Header, err error)
+
 // Client is a client for the OpenAI API.
 type Client struct {
-	token        string
-	Model        string
-	baseURL      string
-	organization string
-	apiType      APIType
-	httpClient   Doer
+	token         string
+	Model         string
+	baseURL       string
+	organization  string
+	apiType       APIType
+	httpClient    Doer
+	tokenProvider TokenProvider // optional; overrides static token when set
 
 	EmbeddingModel      string
 	EmbeddingDimensions int
@@ -49,6 +54,16 @@ type Option func(*Client) error
 func WithEmbeddingDimensions(dimensions int) Option {
 	return func(c *Client) error {
 		c.EmbeddingDimensions = dimensions
+		return nil
+	}
+}
+
+// WithTokenProvider sets a dynamic token provider that is called before each
+// request. This is used for OAuth flows (e.g., ChatGPT auth) where the token
+// may need refreshing and extra headers (like ChatGPT-Account-ID) are required.
+func WithTokenProvider(tp TokenProvider) Option {
+	return func(c *Client) error {
+		c.tokenProvider = tp
 		return nil
 	}
 }
@@ -178,16 +193,32 @@ func IsAzure(apiType APIType) bool {
 	return apiType == APITypeAzure || apiType == APITypeAzureAD
 }
 
-func (c *Client) setHeaders(req *http.Request) {
+func (c *Client) setHeaders(req *http.Request) error {
 	req.Header.Set("Content-Type", "application/json")
+
+	token := c.token
+	if c.tokenProvider != nil {
+		t, extra, err := c.tokenProvider()
+		if err != nil {
+			return fmt.Errorf("token provider: %w", err)
+		}
+		token = t
+		for k, vs := range extra {
+			for _, v := range vs {
+				req.Header.Set(k, v)
+			}
+		}
+	}
+
 	if c.apiType == APITypeOpenAI || c.apiType == APITypeAzureAD {
-		req.Header.Set("Authorization", "Bearer "+c.token)
+		req.Header.Set("Authorization", "Bearer "+token)
 	} else {
-		req.Header.Set("api-key", c.token)
+		req.Header.Set("api-key", token)
 	}
 	if c.organization != "" {
 		req.Header.Set("OpenAI-Organization", c.organization)
 	}
+	return nil
 }
 
 // OpenResponsesSession opens a persistent WebSocket connection to the
@@ -198,7 +229,18 @@ func (c *Client) OpenResponsesSession(ctx context.Context) (*ResponsesSession, e
 	wsURL := c.baseURL + "/responses"
 	wsURL = strings.Replace(wsURL, "https://", "wss://", 1)
 	wsURL = strings.Replace(wsURL, "http://", "ws://", 1)
-	return DialResponsesSession(ctx, wsURL, c.token)
+
+	token := c.token
+	var extraHeaders http.Header
+	if c.tokenProvider != nil {
+		t, extra, err := c.tokenProvider()
+		if err != nil {
+			return nil, fmt.Errorf("token provider: %w", err)
+		}
+		token = t
+		extraHeaders = extra
+	}
+	return DialResponsesSession(ctx, wsURL, token, extraHeaders)
 }
 
 func (c *Client) buildURL(suffix string, model string) string {

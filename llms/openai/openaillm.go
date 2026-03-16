@@ -91,7 +91,7 @@ func New(opts ...Option) (*LLM, error) {
 	return &LLM{
 		client:           c,
 		CallbacksHandler: opt.callbackHandler,
-		model:            c.Model, // Store the model for reasoning detection
+		model:            c.Model,
 	}, err
 }
 

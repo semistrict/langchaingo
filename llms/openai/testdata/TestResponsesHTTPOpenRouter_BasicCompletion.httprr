@@ -1,0 +1,67 @@
+httprr trace v1
+446 6555
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 249
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"minimax/minimax-m2.5","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What is the capital of France? One sentence."}]}],"instructions":"You are a helpful assistant. Be concise.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 6034
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 13:53:23 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=3,cfOrigin;dur=0,cfWorker;dur=2996
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773669201-PLWY7JX03YQ3WAJNNRNl","object":"response","created_at":1773669201,"model":"minimax/minimax-m2.5-20260211","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773669201-PLWY7JX03YQ3WAJNNRNl","object":"response","created_at":1773669201,"model":"minimax/minimax-m2.5-20260211","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"rs_tmp_px2d5uagn3p","type":"reasoning","status":"in_progress","summary":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"rs_tmp_px2d5uagn3p","content_index":0,"part":{"type":"reasoning_text","text":""},"sequence_number":3}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_px2d5uagn3p","content_index":0,"delta":"The user","sequence_number":4}
+
+data: {"type":"response.output_item.added","output_index":1,"item":{"id":"msg_tmp_db8x3jblzxv","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":5}
+
+data: {"type":"response.content_part.added","output_index":1,"item_id":"msg_tmp_db8x3jblzxv","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":6}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_db8x3jblzxv","content_index":0,"delta":"Paris is the capital of France.","logprobs":[],"sequence_number":7}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_px2d5uagn3p","content_index":0,"delta":" is asking a simple factual question about the capital of France, and wants the answer in one sentence.","sequence_number":8}
+
+data: {"type":"response.output_text.done","output_index":1,"item_id":"msg_tmp_db8x3jblzxv","content_index":0,"text":"Paris is the capital of France.","logprobs":[],"sequence_number":9}
+
+data: {"type":"response.content_part.done","output_index":1,"item_id":"msg_tmp_db8x3jblzxv","content_index":0,"part":{"type":"output_text","text":"Paris is the capital of France.","annotations":[],"logprobs":[]},"sequence_number":10}
+
+data: {"type":"response.reasoning_text.done","output_index":0,"item_id":"rs_tmp_px2d5uagn3p","content_index":0,"text":"The user is asking a simple factual question about the capital of France, and wants the answer in one sentence.","sequence_number":11}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"rs_tmp_px2d5uagn3p","content_index":0,"part":{"type":"reasoning_text","text":"The user is asking a simple factual question about the capital of France, and wants the answer in one sentence."},"sequence_number":12}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"rs_tmp_px2d5uagn3p","type":"reasoning","status":"completed","content":[{"type":"reasoning_text","text":"The user is asking a simple factual question about the capital of France, and wants the answer in one sentence."}],"summary":[],"format":"unknown"},"sequence_number":13}
+
+data: {"type":"response.output_item.done","output_index":1,"item":{"id":"msg_tmp_db8x3jblzxv","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"Paris is the capital of France.","annotations":[],"logprobs":[]}]},"sequence_number":14}
+
+data: {"type":"response.completed","response":{"id":"gen-1773669201-PLWY7JX03YQ3WAJNNRNl","object":"response","created_at":1773669201,"model":"minimax/minimax-m2.5-20260211","status":"completed","completed_at":1773669204,"output":[{"id":"rs_tmp_px2d5uagn3p","type":"reasoning","status":"completed","content":[{"type":"reasoning_text","text":"The user is asking a simple factual question about the capital of France, and wants the answer in one sentence."}],"summary":[],"format":"unknown"},{"id":"msg_tmp_db8x3jblzxv","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Paris is the capital of France.","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":33,"input_tokens_details":{"cached_tokens":0},"output_tokens":33,"output_tokens_details":{"reasoning_tokens":25},"total_tokens":66,"cost":0.0000495,"is_byok":false,"cost_details":{"upstream_inference_cost":0.0000495,"upstream_inference_input_cost":0.0000099,"upstream_inference_output_cost":0.0000396}}},"sequence_number":15}
+
+data: [DONE]
+

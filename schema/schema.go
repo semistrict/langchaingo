@@ -2,10 +2,11 @@ package schema
 
 // AgentAction is the agent's action to take.
 type AgentAction struct {
-	Tool      string
-	ToolInput string
-	Log       string
-	ToolID    string
+	Tool       string
+	ToolInput  string
+	Log        string
+	ToolID     string
+	ResponseID string // response ID for server-side context caching
 }
 
 // AgentStep is a step of the agent.

@@ -146,6 +146,10 @@ func (o *OpenAIFunctionsAgent) Plan(
 				Parts: []llms.ContentPart{llms.TextContent{Text: text}},
 			}
 		}
+		// Thread response ID from AIChatMessage to MessageContent.
+		if aim, ok := msg.(llms.AIChatMessage); ok && aim.ID != "" {
+			mc.ID = aim.ID
+		}
 		mcList[i] = mc
 	}
 
@@ -218,6 +222,7 @@ func (o *OpenAIFunctionsAgent) constructScratchPad(steps []schema.AgentStep) []l
 				messages = append(messages, llms.AIChatMessage{
 					Content:   currentLog,
 					ToolCalls: currentToolCalls,
+					ID:        steps[i-len(currentToolCalls)].Action.ResponseID,
 				})
 				// Add tool responses for the previous group
 				for j := i - len(currentToolCalls); j < i; j++ {
@@ -247,6 +252,7 @@ func (o *OpenAIFunctionsAgent) constructScratchPad(steps []schema.AgentStep) []l
 		messages = append(messages, llms.AIChatMessage{
 			Content:   currentLog,
 			ToolCalls: currentToolCalls,
+			ID:        steps[len(steps)-len(currentToolCalls)].Action.ResponseID,
 		})
 		// Add tool responses for the last group
 		for j := len(steps) - len(currentToolCalls); j < len(steps); j++ {
@@ -298,10 +304,11 @@ func (o *OpenAIFunctionsAgent) ParseOutput(contentResp *llms.ContentResponse) (
 			}
 
 			actions = append(actions, schema.AgentAction{
-				Tool:      functionName,
-				ToolInput: toolInput,
-				Log:       fmt.Sprintf("Invoking: %s with %s %s", functionName, toolInputStr, contentMsg),
-				ToolID:    toolCall.ID,
+				Tool:       functionName,
+				ToolInput:  toolInput,
+				Log:        fmt.Sprintf("Invoking: %s with %s %s", functionName, toolInputStr, contentMsg),
+				ToolID:     toolCall.ID,
+				ResponseID: choice.ID,
 			})
 		}
 

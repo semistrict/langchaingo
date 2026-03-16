@@ -34,11 +34,15 @@ func (s *ResponsesSession) SetRecorder(r MessageRecorder) {
 }
 
 // DialResponsesSession opens a WebSocket connection to the Responses API.
-func DialResponsesSession(ctx context.Context, wsURL, token string) (*ResponsesSession, error) {
+func DialResponsesSession(ctx context.Context, wsURL, token string, extraHeaders http.Header) (*ResponsesSession, error) {
+	headers := http.Header{
+		"Authorization": []string{"Bearer " + token},
+	}
+	for k, vs := range extraHeaders {
+		headers[k] = vs
+	}
 	conn, _, err := websocket.Dial(ctx, wsURL, &websocket.DialOptions{
-		HTTPHeader: http.Header{
-			"Authorization": []string{"Bearer " + token},
-		},
+		HTTPHeader: headers,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("websocket dial: %w", err)

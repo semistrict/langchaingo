@@ -14,6 +14,7 @@ import (
 type MessageContent struct {
 	Role  ChatMessageType
 	Parts []ContentPart
+	ID    string // optional; response ID for server-side context caching
 }
 
 // TextPart creates TextContent from a given string.
@@ -146,6 +147,10 @@ type ContentChoice struct {
 
 	// This field is only used with the deepseek-reasoner model and represents the reasoning contents of the assistant message before the final answer.
 	ReasoningContent string
+
+	// ID is the response ID from the model (e.g., OpenAI response_id).
+	// Used by stateful sessions to avoid re-sending known context.
+	ID string
 }
 
 // TextParts is a helper function to create a MessageContent with a role and a

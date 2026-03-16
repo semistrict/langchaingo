@@ -1,0 +1,189 @@
+httprr trace v1
+425 8379
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 228
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"minimax/minimax-m2.5","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"Remember the number 42."}]}],"instructions":"You are a helpful assistant. Be concise.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 7858
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 13:53:26 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=3,cfOrigin;dur=0,cfWorker;dur=1492
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773669204-Uny684zE3GuGQx5QOY9g","object":"response","created_at":1773669204,"model":"minimax/minimax-m2.5-20260211","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773669204-Uny684zE3GuGQx5QOY9g","object":"response","created_at":1773669204,"model":"minimax/minimax-m2.5-20260211","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"rs_tmp_h8ovq9c8mww","type":"reasoning","status":"in_progress","summary":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"rs_tmp_h8ovq9c8mww","content_index":0,"part":{"type":"reasoning_text","text":""},"sequence_number":3}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_h8ovq9c8mww","content_index":0,"delta":"The user","sequence_number":4}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_h8ovq9c8mww","content_index":0,"delta":" is asking me to remember the number 42. This is a reference to \"The Hitchhiker's Guide to the Galaxy\" by Douglas Adams, where the number 42 is famously","sequence_number":5}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_h8ovq9c8mww","content_index":0,"delta":" revealed to be the \"Answer to the Ultimate Question of Life, the Universe, and Everything.\"\n\nI should acknowledge this in a brief, friendly","sequence_number":6}
+
+data: {"type":"response.output_item.added","output_index":1,"item":{"id":"msg_tmp_zgfcngcsswn","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":7}
+
+data: {"type":"response.content_part.added","output_index":1,"item_id":"msg_tmp_zgfcngcsswn","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":8}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_zgfcngcsswn","content_index":0,"delta":"Got it — 42. The","logprobs":[],"sequence_number":9}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_h8ovq9c8mww","content_index":0,"delta":" way. I don't need to provide a lengthy response - just a concise acknowledgment.","sequence_number":10}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_zgfcngcsswn","content_index":0,"delta":" answer to everything. 🚀","logprobs":[],"sequence_number":11}
+
+data: {"type":"response.output_text.done","output_index":1,"item_id":"msg_tmp_zgfcngcsswn","content_index":0,"text":"Got it — 42. The answer to everything. 🚀","logprobs":[],"sequence_number":12}
+
+data: {"type":"response.content_part.done","output_index":1,"item_id":"msg_tmp_zgfcngcsswn","content_index":0,"part":{"type":"output_text","text":"Got it — 42. The answer to everything. 🚀","annotations":[],"logprobs":[]},"sequence_number":13}
+
+data: {"type":"response.reasoning_text.done","output_index":0,"item_id":"rs_tmp_h8ovq9c8mww","content_index":0,"text":"The user is asking me to remember the number 42. This is a reference to \"The Hitchhiker's Guide to the Galaxy\" by Douglas Adams, where the number 42 is famously revealed to be the \"Answer to the Ultimate Question of Life, the Universe, and Everything.\"\n\nI should acknowledge this in a brief, friendly way. I don't need to provide a lengthy response - just a concise acknowledgment.","sequence_number":14}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"rs_tmp_h8ovq9c8mww","content_index":0,"part":{"type":"reasoning_text","text":"The user is asking me to remember the number 42. This is a reference to \"The Hitchhiker's Guide to the Galaxy\" by Douglas Adams, where the number 42 is famously revealed to be the \"Answer to the Ultimate Question of Life, the Universe, and Everything.\"\n\nI should acknowledge this in a brief, friendly way. I don't need to provide a lengthy response - just a concise acknowledgment."},"sequence_number":15}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"rs_tmp_h8ovq9c8mww","type":"reasoning","status":"completed","content":[{"type":"reasoning_text","text":"The user is asking me to remember the number 42. This is a reference to \"The Hitchhiker's Guide to the Galaxy\" by Douglas Adams, where the number 42 is famously revealed to be the \"Answer to the Ultimate Question of Life, the Universe, and Everything.\"\n\nI should acknowledge this in a brief, friendly way. I don't need to provide a lengthy response - just a concise acknowledgment."}],"summary":[],"format":"unknown"},"sequence_number":16}
+
+data: {"type":"response.output_item.done","output_index":1,"item":{"id":"msg_tmp_zgfcngcsswn","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"Got it — 42. The answer to everything. 🚀","annotations":[],"logprobs":[]}]},"sequence_number":17}
+
+data: {"type":"response.completed","response":{"id":"gen-1773669204-Uny684zE3GuGQx5QOY9g","object":"response","created_at":1773669204,"model":"minimax/minimax-m2.5-20260211","status":"completed","completed_at":1773669207,"output":[{"id":"rs_tmp_h8ovq9c8mww","type":"reasoning","status":"completed","content":[{"type":"reasoning_text","text":"The user is asking me to remember the number 42. This is a reference to \"The Hitchhiker's Guide to the Galaxy\" by Douglas Adams, where the number 42 is famously revealed to be the \"Answer to the Ultimate Question of Life, the Universe, and Everything.\"\n\nI should acknowledge this in a brief, friendly way. I don't need to provide a lengthy response - just a concise acknowledgment."}],"summary":[],"format":"unknown"},{"id":"msg_tmp_zgfcngcsswn","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Got it — 42. The answer to everything. 🚀","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":29,"input_tokens_details":{"cached_tokens":0},"output_tokens":99,"output_tokens_details":{"reasoning_tokens":85},"total_tokens":128,"cost":0.000255,"is_byok":false,"cost_details":{"upstream_inference_cost":0.000255,"upstream_inference_input_cost":0.0000174,"upstream_inference_output_cost":0.0002376}}},"sequence_number":18}
+
+data: [DONE]
+
+668 10681
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 471
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"minimax/minimax-m2.5","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"Remember the number 42."}]},{"type":"message","role":"assistant","content":[{"type":"output_text","text":"Got it — 42. The answer to everything. 🚀"}]},{"type":"message","role":"user","content":[{"type":"input_text","text":"What number did I ask you to remember?"}]}],"instructions":"You are a helpful assistant. Be concise.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 10160
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 13:53:28 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=3,cfOrigin;dur=0,cfWorker;dur=530
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773669207-TYQxUz5cOZKIZnpLjqQ8","object":"response","created_at":1773669207,"model":"minimax/minimax-m2.5-20260211","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773669207-TYQxUz5cOZKIZnpLjqQ8","object":"response","created_at":1773669207,"model":"minimax/minimax-m2.5-20260211","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"rs_tmp_wkskueg8af","type":"reasoning","status":"in_progress","summary":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"part":{"type":"reasoning_text","text":""},"sequence_number":3}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":"The","sequence_number":4}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" user","sequence_number":5}
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" asked","sequence_number":6}
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" me","sequence_number":7}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" to","sequence_number":8}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" remember","sequence_number":9}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" the","sequence_number":10}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" number","sequence_number":11}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" ","sequence_number":12}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":"42","sequence_number":13}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" in","sequence_number":14}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" the","sequence_number":15}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" previous","sequence_number":16}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" message","sequence_number":17}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":".","sequence_number":18}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" They're","sequence_number":19}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" now","sequence_number":20}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" testing","sequence_number":21}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" if","sequence_number":22}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" I","sequence_number":23}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" recall","sequence_number":24}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":" it","sequence_number":25}
+
+data: {"type":"response.reasoning_text.delta","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"delta":".\n","sequence_number":26}
+
+data: {"type":"response.output_item.added","output_index":1,"item":{"id":"msg_tmp_pnfyynibssr","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":27}
+
+data: {"type":"response.content_part.added","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":28}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":"You","logprobs":[],"sequence_number":29}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":" asked","logprobs":[],"sequence_number":30}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":" me","logprobs":[],"sequence_number":31}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":" to","logprobs":[],"sequence_number":32}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":" remember","logprobs":[],"sequence_number":33}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":" **","logprobs":[],"sequence_number":34}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":"42","logprobs":[],"sequence_number":35}
+
+data: {"type":"response.output_text.delta","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"delta":"**.","logprobs":[],"sequence_number":36}
+
+data: {"type":"response.output_text.done","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"text":"You asked me to remember **42**.","logprobs":[],"sequence_number":37}
+
+data: {"type":"response.content_part.done","output_index":1,"item_id":"msg_tmp_pnfyynibssr","content_index":0,"part":{"type":"output_text","text":"You asked me to remember **42**.","annotations":[],"logprobs":[]},"sequence_number":38}
+
+data: {"type":"response.reasoning_text.done","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"text":"The user asked me to remember the number 42 in the previous message. They're now testing if I recall it.\n","sequence_number":39}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"rs_tmp_wkskueg8af","content_index":0,"part":{"type":"reasoning_text","text":"The user asked me to remember the number 42 in the previous message. They're now testing if I recall it.\n"},"sequence_number":40}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"rs_tmp_wkskueg8af","type":"reasoning","status":"completed","content":[{"type":"reasoning_text","text":"The user asked me to remember the number 42 in the previous message. They're now testing if I recall it.\n"}],"summary":[],"format":"unknown"},"sequence_number":41}
+
+data: {"type":"response.output_item.done","output_index":1,"item":{"id":"msg_tmp_pnfyynibssr","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"You asked me to remember **42**.","annotations":[],"logprobs":[]}]},"sequence_number":42}
+
+data: {"type":"response.completed","response":{"id":"gen-1773669207-TYQxUz5cOZKIZnpLjqQ8","object":"response","created_at":1773669207,"model":"minimax/minimax-m2.5-20260211","status":"completed","completed_at":1773669213,"output":[{"id":"rs_tmp_wkskueg8af","type":"reasoning","status":"completed","content":[{"type":"reasoning_text","text":"The user asked me to remember the number 42 in the previous message. They're now testing if I recall it.\n"}],"summary":[],"format":"unknown"},{"id":"msg_tmp_pnfyynibssr","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"You asked me to remember **42**.","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":63,"input_tokens_details":{"cached_tokens":0},"output_tokens":34,"output_tokens_details":{"reasoning_tokens":27},"total_tokens":97,"cost":0.00005655,"is_byok":false,"cost_details":{"upstream_inference_cost":0.00005655,"upstream_inference_input_cost":0.00001575,"upstream_inference_output_cost":0.0000408}}},"sequence_number":43}
+
+data: [DONE]
+

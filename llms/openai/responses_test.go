@@ -57,6 +57,42 @@ func newResponsesTestServer(t *testing.T, turns [][]json.RawMessage) *httptest.S
 	}))
 }
 
+// newResponsesTestServerWithCapture is like newResponsesTestServer but captures
+// the last request received into *captured.
+func newResponsesTestServerWithCapture(t *testing.T, turns [][]json.RawMessage, captured *json.RawMessage) *httptest.Server {
+	t.Helper()
+	turnIdx := 0
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := websocket.Accept(w, r, nil)
+		if err != nil {
+			t.Errorf("websocket accept: %v", err)
+			return
+		}
+		defer conn.Close(websocket.StatusNormalClosure, "done")
+
+		ctx := r.Context()
+		for {
+			var raw json.RawMessage
+			if err := wsjson.Read(ctx, conn, &raw); err != nil {
+				return
+			}
+			*captured = append(json.RawMessage(nil), raw...)
+
+			if turnIdx >= len(turns) {
+				t.Errorf("unexpected turn %d", turnIdx)
+				return
+			}
+
+			for _, event := range turns[turnIdx] {
+				if err := wsjson.Write(ctx, conn, event); err != nil {
+					return
+				}
+			}
+			turnIdx++
+		}
+	}))
+}
+
 func newTestLLMWithWSServer(t *testing.T, srv *httptest.Server) *LLM {
 	t.Helper()
 	// The internal client converts baseURL + "/responses" to a ws:// URL.

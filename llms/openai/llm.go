@@ -42,6 +42,10 @@ func newClient(opts ...Option) (*options, *openaiclient.Client, error) {
 		}
 	}
 
+	if options.chatGPTAuthError != nil {
+		return options, nil, options.chatGPTAuthError
+	}
+
 	if len(options.token) == 0 {
 		return options, nil, ErrMissingToken
 	}
@@ -49,6 +53,9 @@ func newClient(opts ...Option) (*options, *openaiclient.Client, error) {
 	var clientOptions []openaiclient.Option
 	if options.embeddingDimensions != 0 {
 		clientOptions = append(clientOptions, openaiclient.WithEmbeddingDimensions(options.embeddingDimensions))
+	}
+	if options.chatGPTAuth != nil {
+		clientOptions = append(clientOptions, openaiclient.WithTokenProvider(options.chatGPTAuth.Token))
 	}
 	cli, err := openaiclient.New(options.token, options.model, options.baseURL, options.organization,
 		openaiclient.APIType(options.apiType), options.apiVersion, options.httpClient, options.embeddingModel,

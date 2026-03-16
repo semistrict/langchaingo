@@ -2,6 +2,7 @@ package openai
 
 import (
 	"github.com/tmc/langchaingo/callbacks"
+	"github.com/tmc/langchaingo/llms/openai/chatgptauth"
 	"github.com/tmc/langchaingo/llms/openai/internal/openaiclient"
 )
 
@@ -40,7 +41,9 @@ type options struct {
 	embeddingModel      string
 	embeddingDimensions int
 
-	callbackHandler callbacks.Handler
+	callbackHandler  callbacks.Handler
+	chatGPTAuth      *chatgptauth.Auth // set by WithChatGPTAuth
+	chatGPTAuthError error             // deferred error from WithChatGPTAuth
 }
 
 // Option is a functional option for the OpenAI client.
@@ -144,5 +147,29 @@ func WithCallback(callbackHandler callbacks.Handler) Option {
 func WithResponseFormat(responseFormat *ResponseFormat) Option {
 	return func(opts *options) {
 		opts.responseFormat = responseFormat
+	}
+}
+
+// WithChatGPTAuth configures the client to use ChatGPT OAuth authentication
+// instead of an API key. The auth.json file (produced by "npx @openai/codex login")
+// is loaded from the given path, or from default locations ($CODEX_HOME/auth.json,
+// ~/.codex/auth.json) if path is empty.
+//
+// This automatically sets the base URL to the ChatGPT backend API and
+// configures token refresh. No OPENAI_API_KEY is needed.
+func WithChatGPTAuth(authFilePath string, authOpts ...chatgptauth.Option) Option {
+	return func(opts *options) {
+		auth, err := chatgptauth.Load(authFilePath, authOpts...)
+		if err != nil {
+			opts.chatGPTAuthError = err
+			return
+		}
+		opts.chatGPTAuth = auth
+		if opts.baseURL == "" {
+			opts.baseURL = chatgptauth.DefaultBaseURL
+		}
+		// Set a placeholder token to pass the non-empty check in newClient.
+		// The real token comes from the TokenProvider at request time.
+		opts.token = "chatgpt-oauth"
 	}
 }

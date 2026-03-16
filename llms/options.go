@@ -73,6 +73,12 @@ type CallOptions struct {
 	// WebSearchOptions configures web search behavior for models that support it.
 	// Currently supported by OpenAI models like gpt-4o-search-preview.
 	WebSearchOptions *WebSearchOptions `json:"web_search_options,omitempty"`
+
+	// PreviousResponseID chains this request to a prior Responses API response.
+	// The server reuses cached context from the previous response, so only new
+	// messages need to be sent. Only supported by the OpenAI Responses API
+	// (not ChatGPT backend or OpenRouter). The caller must explicitly opt in.
+	PreviousResponseID string `json:"previous_response_id,omitempty"`
 }
 
 // Tool is a tool that can be used by the model.
@@ -339,5 +345,15 @@ func WithWebSearch(options *WebSearchOptions) CallOption {
 		} else {
 			o.WebSearchOptions = options
 		}
+	}
+}
+
+// WithPreviousResponseID chains this request to a prior Responses API response,
+// enabling server-side context caching. Only new messages after the previous
+// response need to be sent. Supported by the OpenAI Responses API; not
+// supported by the ChatGPT backend or OpenRouter.
+func WithPreviousResponseID(id string) CallOption {
+	return func(o *CallOptions) {
+		o.PreviousResponseID = id
 	}
 }
