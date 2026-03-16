@@ -17,13 +17,16 @@ type ResponsesCreateRequest struct {
 }
 
 // ResponsesInputItem is a union type for input items in a Responses API request.
-// It can be a user/system message or a function_call_output.
+// It can be a user/system message, a function_call, or a function_call_output.
 type ResponsesInputItem struct {
-	Type    string             `json:"type"` // "message" or "function_call_output"
-	Role    string             `json:"role,omitempty"`
-	Content []ResponsesContent `json:"content,omitempty"`
-	CallID  string             `json:"call_id,omitempty"`
-	Output  string             `json:"output,omitempty"`
+	Type      string             `json:"type"` // "message", "function_call", or "function_call_output"
+	ID        string             `json:"id,omitempty"`
+	Role      string             `json:"role,omitempty"`
+	Content   []ResponsesContent `json:"content,omitempty"`
+	Name      string             `json:"name,omitempty"`      // for function_call
+	Arguments string             `json:"arguments,omitempty"` // for function_call
+	CallID    string             `json:"call_id,omitempty"`   // for function_call and function_call_output
+	Output    string             `json:"output,omitempty"`    // for function_call_output
 }
 
 // ResponsesContent is a content block within a message input item.
@@ -92,9 +95,15 @@ type responsesCompletedEvent struct {
 
 // ResponsesUsage contains token usage statistics.
 type ResponsesUsage struct {
-	InputTokens  int `json:"input_tokens"`
-	OutputTokens int `json:"output_tokens"`
-	TotalTokens  int `json:"total_tokens"`
+	InputTokens       int                    `json:"input_tokens"`
+	InputTokensDetails *ResponsesTokenDetails `json:"input_tokens_details,omitempty"`
+	OutputTokens      int                    `json:"output_tokens"`
+	TotalTokens       int                    `json:"total_tokens"`
+}
+
+// ResponsesTokenDetails contains detailed token breakdown.
+type ResponsesTokenDetails struct {
+	CachedTokens int `json:"cached_tokens"`
 }
 
 // responsesErrorEvent is sent when an error occurs.

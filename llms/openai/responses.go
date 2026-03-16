@@ -460,15 +460,25 @@ func messagesToResponsesInput(messages []llms.MessageContent) []openaiclient.Res
 			role = string(msg.Role)
 		}
 
-		// Check if this is a tool call response.
+		// Handle tool calls (assistant function calls) and tool call responses.
 		for _, part := range msg.Parts {
-			if tcr, ok := part.(llms.ToolCallResponse); ok {
+			switch p := part.(type) {
+			case llms.ToolCall:
+				item := openaiclient.ResponsesInputItem{
+					Type:   "function_call",
+					CallID: p.ID,
+				}
+				if p.FunctionCall != nil {
+					item.Name = p.FunctionCall.Name
+					item.Arguments = p.FunctionCall.Arguments
+				}
+				items = append(items, item)
+			case llms.ToolCallResponse:
 				items = append(items, openaiclient.ResponsesInputItem{
 					Type:   "function_call_output",
-					CallID: tcr.ToolCallID,
-					Output: tcr.Content,
+					CallID: p.ToolCallID,
+					Output: p.Content,
 				})
-				continue
 			}
 		}
 
@@ -530,16 +540,24 @@ func convertTools(tools []llms.Tool) []openaiclient.ResponsesTool {
 	return result
 }
 
+func cachedTokens(u openaiclient.ResponsesUsage) int {
+	if u.InputTokensDetails != nil {
+		return u.InputTokensDetails.CachedTokens
+	}
+	return 0
+}
+
 // responsesResultToContentResponse converts a ResponsesResult to llms.ContentResponse.
 func responsesResultToContentResponse(result *openaiclient.ResponsesResult) *llms.ContentResponse {
 	choice := &llms.ContentChoice{
 		Content:    result.Content,
 		StopReason: "stop",
 		GenerationInfo: map[string]any{
-			"response_id":  result.ResponseID,
-			"input_tokens": result.Usage.InputTokens,
+			"response_id":   result.ResponseID,
+			"input_tokens":  result.Usage.InputTokens,
 			"output_tokens": result.Usage.OutputTokens,
-			"total_tokens": result.Usage.TotalTokens,
+			"total_tokens":  result.Usage.TotalTokens,
+			"cached_tokens": cachedTokens(result.Usage),
 		},
 	}
 

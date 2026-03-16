@@ -23,6 +23,7 @@ help:
 	@echo "  tinygo-build   - Try building the core library with tinygo"
 	@echo "  tinygo-wasm-build - Try building the core library as WASM with tinygo"
 	@echo "  wasm-build     - Build the core library as WASM with Go"
+	@echo "  coding-agent   - Build the coding agent into bin/"
 	@echo "  build-examples - Build all example projects to verify they compile"
 	@echo "  update-examples - Update langchaingo version in all examples"
 	@echo "  docs           - Generate documentation"
@@ -137,6 +138,10 @@ wasm-build-nodeps:
 	@echo "Building WASM with Go (no optional deps)..."
 	GOOS=wasip1 GOARCH=wasm go build -tags="$(TINYGO_TAGS)" -o bin/langchaingo-nodeps.wasm ./cmd/tinygo-check
 	@ls -lh bin/langchaingo-nodeps.wasm
+
+.PHONY: coding-agent
+coding-agent:
+	cd examples/coding-agent && go build -o ../../bin/coding-agent .
 
 .PHONY: build-examples
 build-examples:

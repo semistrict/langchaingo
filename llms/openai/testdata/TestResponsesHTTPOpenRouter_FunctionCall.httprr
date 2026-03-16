@@ -1,0 +1,137 @@
+httprr trace v1
+733 5685
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 536
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"openai/gpt-4.1-mini","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What's the weather in San Francisco?"}]}],"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false}}],"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 5165
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 14:33:18 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=6,cfOrigin;dur=0,cfWorker;dur=312
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773671597-s4JHBBevz1jYqhAtbWpl","object":"response","created_at":1773671597,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773671597-s4JHBBevz1jYqhAtbWpl","object":"response","created_at":1773671597,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"fc_tmp_81t8n7d6vq","type":"function_call","status":"in_progress","call_id":"call_LjidVyCA8NPbB3f1yJ4mt9WU","name":"get_weather","arguments":""},"sequence_number":2}
+
+data: {"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_tmp_81t8n7d6vq","delta":"{\"","sequence_number":3}
+
+data: {"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_tmp_81t8n7d6vq","delta":"city","sequence_number":4}
+
+data: {"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_tmp_81t8n7d6vq","delta":"\":\"","sequence_number":5}
+
+data: {"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_tmp_81t8n7d6vq","delta":"San","sequence_number":6}
+
+data: {"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_tmp_81t8n7d6vq","delta":" Francisco","sequence_number":7}
+
+data: {"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_tmp_81t8n7d6vq","delta":"\"}","sequence_number":8}
+
+data: {"type":"response.function_call_arguments.done","output_index":0,"item_id":"fc_tmp_81t8n7d6vq","name":"get_weather","arguments":"{\"city\":\"San Francisco\"}","sequence_number":9}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"fc_tmp_81t8n7d6vq","type":"function_call","status":"completed","call_id":"call_LjidVyCA8NPbB3f1yJ4mt9WU","name":"get_weather","arguments":"{\"city\":\"San Francisco\"}"},"sequence_number":10}
+
+data: {"type":"response.completed","response":{"id":"gen-1773671597-s4JHBBevz1jYqhAtbWpl","object":"response","created_at":1773671597,"model":"openai/gpt-4.1-mini-2025-04-14","status":"completed","completed_at":1773671598,"output":[{"id":"fc_tmp_81t8n7d6vq","type":"function_call","status":"completed","call_id":"call_LjidVyCA8NPbB3f1yJ4mt9WU","name":"get_weather","arguments":"{\"city\":\"San Francisco\"}"}],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":71,"input_tokens_details":{"cached_tokens":0},"output_tokens":16,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":87,"cost":0.000054,"is_byok":false,"cost_details":{"upstream_inference_cost":0.000054,"upstream_inference_input_cost":0.0000284,"upstream_inference_output_cost":0.0000256}}},"sequence_number":11}
+
+data: [DONE]
+
+1015 9269
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 818
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"openai/gpt-4.1-mini","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What's the weather in San Francisco?"}]},{"type":"function_call","name":"get_weather","arguments":"{\"city\":\"San Francisco\"}","call_id":"call_LjidVyCA8NPbB3f1yJ4mt9WU"},{"type":"function_call_output","call_id":"call_LjidVyCA8NPbB3f1yJ4mt9WU","output":"{\"temperature\": 65, \"condition\": \"sunny\", \"humidity\": 55}"}],"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false}}],"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 8749
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 14:33:19 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=4,cfOrigin;dur=0,cfWorker;dur=284
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773671599-YZOJBcw9X6pocVpFFpCz","object":"response","created_at":1773671599,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773671599-YZOJBcw9X6pocVpFFpCz","object":"response","created_at":1773671599,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"msg_tmp_ainp4ukqgdo","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":3}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":"The","logprobs":[],"sequence_number":4}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" weather","logprobs":[],"sequence_number":5}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" in","logprobs":[],"sequence_number":6}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" San","logprobs":[],"sequence_number":7}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" Francisco","logprobs":[],"sequence_number":8}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" is","logprobs":[],"sequence_number":9}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" currently","logprobs":[],"sequence_number":10}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" sunny","logprobs":[],"sequence_number":11}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" with","logprobs":[],"sequence_number":12}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" a","logprobs":[],"sequence_number":13}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" temperature","logprobs":[],"sequence_number":14}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" of","logprobs":[],"sequence_number":15}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" ","logprobs":[],"sequence_number":16}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":"65","logprobs":[],"sequence_number":17}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":"°F","logprobs":[],"sequence_number":18}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" and","logprobs":[],"sequence_number":19}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" a","logprobs":[],"sequence_number":20}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" humidity","logprobs":[],"sequence_number":21}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" level","logprobs":[],"sequence_number":22}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" of","logprobs":[],"sequence_number":23}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":" ","logprobs":[],"sequence_number":24}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":"55","logprobs":[],"sequence_number":25}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"delta":"%.","logprobs":[],"sequence_number":26}
+
+data: {"type":"response.output_text.done","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"text":"The weather in San Francisco is currently sunny with a temperature of 65°F and a humidity level of 55%.","logprobs":[],"sequence_number":27}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"msg_tmp_ainp4ukqgdo","content_index":0,"part":{"type":"output_text","text":"The weather in San Francisco is currently sunny with a temperature of 65°F and a humidity level of 55%.","annotations":[],"logprobs":[]},"sequence_number":28}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"msg_tmp_ainp4ukqgdo","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"The weather in San Francisco is currently sunny with a temperature of 65°F and a humidity level of 55%.","annotations":[],"logprobs":[]}]},"sequence_number":29}
+
+data: {"type":"response.completed","response":{"id":"gen-1773671599-YZOJBcw9X6pocVpFFpCz","object":"response","created_at":1773671599,"model":"openai/gpt-4.1-mini-2025-04-14","status":"completed","completed_at":1773671599,"output":[{"id":"msg_tmp_ainp4ukqgdo","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"The weather in San Francisco is currently sunny with a temperature of 65°F and a humidity level of 55%.","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Use the get_weather tool to answer weather questions.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":111,"input_tokens_details":{"cached_tokens":0},"output_tokens":25,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":136,"cost":0.0000844,"is_byok":false,"cost_details":{"upstream_inference_cost":0.0000844,"upstream_inference_input_cost":0.0000444,"upstream_inference_output_cost":0.00004}}},"sequence_number":30}
+
+data: [DONE]
+

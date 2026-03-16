@@ -1,0 +1,163 @@
+httprr trace v1
+1005 6809
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 808
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"openai/gpt-4.1-mini","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What's the weather and population of Tokyo?"}]}],"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false}},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false}}],"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 6289
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 14:33:26 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=4,cfOrigin;dur=0,cfWorker;dur=293
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773671605-4bdfZo2Dv0u2NfZWlFcQ","object":"response","created_at":1773671605,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773671605-4bdfZo2Dv0u2NfZWlFcQ","object":"response","created_at":1773671605,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"fc_tmp_rz4rd7u6ele","type":"function_call","status":"in_progress","call_id":"call_ybG6mFTZOxif2gbEYm6kYmXV","name":"get_weather","arguments":""},"sequence_number":2}
+
+data: {"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_tmp_rz4rd7u6ele","delta":"{\"city\":\"Tokyo\"}","sequence_number":3}
+
+data: {"type":"response.output_item.added","output_index":1,"item":{"id":"fc_tmp_arz6e5k9cm","type":"function_call","status":"in_progress","call_id":"call_TPkp2a0SaSaN1Qz9ogmnUuPg","name":"get_population","arguments":""},"sequence_number":4}
+
+data: {"type":"response.function_call_arguments.delta","output_index":1,"item_id":"fc_tmp_arz6e5k9cm","delta":"{\"city\":\"Tokyo\"}","sequence_number":5}
+
+data: {"type":"response.function_call_arguments.done","output_index":0,"item_id":"fc_tmp_rz4rd7u6ele","name":"get_weather","arguments":"{\"city\":\"Tokyo\"}","sequence_number":6}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"fc_tmp_rz4rd7u6ele","type":"function_call","status":"completed","call_id":"call_ybG6mFTZOxif2gbEYm6kYmXV","name":"get_weather","arguments":"{\"city\":\"Tokyo\"}"},"sequence_number":7}
+
+data: {"type":"response.function_call_arguments.done","output_index":1,"item_id":"fc_tmp_arz6e5k9cm","name":"get_population","arguments":"{\"city\":\"Tokyo\"}","sequence_number":8}
+
+data: {"type":"response.output_item.done","output_index":1,"item":{"id":"fc_tmp_arz6e5k9cm","type":"function_call","status":"completed","call_id":"call_TPkp2a0SaSaN1Qz9ogmnUuPg","name":"get_population","arguments":"{\"city\":\"Tokyo\"}"},"sequence_number":9}
+
+data: {"type":"response.completed","response":{"id":"gen-1773671605-4bdfZo2Dv0u2NfZWlFcQ","object":"response","created_at":1773671605,"model":"openai/gpt-4.1-mini-2025-04-14","status":"completed","completed_at":1773671606,"output":[{"id":"fc_tmp_rz4rd7u6ele","type":"function_call","status":"completed","call_id":"call_ybG6mFTZOxif2gbEYm6kYmXV","name":"get_weather","arguments":"{\"city\":\"Tokyo\"}"},{"id":"fc_tmp_arz6e5k9cm","type":"function_call","status":"completed","call_id":"call_TPkp2a0SaSaN1Qz9ogmnUuPg","name":"get_population","arguments":"{\"city\":\"Tokyo\"}"}],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":102,"input_tokens_details":{"cached_tokens":0},"output_tokens":45,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":147,"cost":0.0001128,"is_byok":false,"cost_details":{"upstream_inference_cost":0.0001128,"upstream_inference_input_cost":0.0000408,"upstream_inference_output_cost":0.000072}}},"sequence_number":10}
+
+data: [DONE]
+
+1562 12952
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 1364
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"openai/gpt-4.1-mini","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What's the weather and population of Tokyo?"}]},{"type":"function_call","name":"get_weather","arguments":"{\"city\":\"Tokyo\"}{\"city\":\"Tokyo\"}","call_id":"call_ybG6mFTZOxif2gbEYm6kYmXV"},{"type":"function_call","name":"get_population","arguments":"{\"city\":\"Tokyo\"}","call_id":"call_TPkp2a0SaSaN1Qz9ogmnUuPg"},{"type":"function_call_output","call_id":"call_ybG6mFTZOxif2gbEYm6kYmXV","output":"{\"temperature\": 22, \"condition\": \"partly cloudy\", \"humidity\": 60}"},{"type":"function_call_output","call_id":"call_TPkp2a0SaSaN1Qz9ogmnUuPg","output":"{\"population\": 13960000, \"year\": 2024}"}],"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false}},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false}}],"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 12431
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 14:33:27 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=7,cfOrigin;dur=0,cfWorker;dur=185
+X-Content-Type-Options: nosniff
+
+data: {"type":"response.created","response":{"id":"gen-1773671607-FQ2oRK3m3bZTS3LiJIL5","object":"response","created_at":1773671607,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773671607-FQ2oRK3m3bZTS3LiJIL5","object":"response","created_at":1773671607,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"msg_tmp_549gr6ynx6f","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":3}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"The","logprobs":[],"sequence_number":4}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" current","logprobs":[],"sequence_number":5}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" weather","logprobs":[],"sequence_number":6}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" in","logprobs":[],"sequence_number":7}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" Tokyo","logprobs":[],"sequence_number":8}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" is","logprobs":[],"sequence_number":9}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" partly","logprobs":[],"sequence_number":10}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" cloudy","logprobs":[],"sequence_number":11}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" with","logprobs":[],"sequence_number":12}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" a","logprobs":[],"sequence_number":13}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" temperature","logprobs":[],"sequence_number":14}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" of","logprobs":[],"sequence_number":15}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" ","logprobs":[],"sequence_number":16}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"22","logprobs":[],"sequence_number":17}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"°C","logprobs":[],"sequence_number":18}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" and","logprobs":[],"sequence_number":19}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" humidity","logprobs":[],"sequence_number":20}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" around","logprobs":[],"sequence_number":21}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" ","logprobs":[],"sequence_number":22}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"60","logprobs":[],"sequence_number":23}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"%.","logprobs":[],"sequence_number":24}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" The","logprobs":[],"sequence_number":25}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" population","logprobs":[],"sequence_number":26}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" of","logprobs":[],"sequence_number":27}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" Tokyo","logprobs":[],"sequence_number":28}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" as","logprobs":[],"sequence_number":29}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" of","logprobs":[],"sequence_number":30}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" ","logprobs":[],"sequence_number":31}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"202","logprobs":[],"sequence_number":32}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"4","logprobs":[],"sequence_number":33}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" is","logprobs":[],"sequence_number":34}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" approximately","logprobs":[],"sequence_number":35}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" ","logprobs":[],"sequence_number":36}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"13","logprobs":[],"sequence_number":37}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":".","logprobs":[],"sequence_number":38}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":"96","logprobs":[],"sequence_number":39}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" million","logprobs":[],"sequence_number":40}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":" people","logprobs":[],"sequence_number":41}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"delta":".","logprobs":[],"sequence_number":42}
+
+data: {"type":"response.output_text.done","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"text":"The current weather in Tokyo is partly cloudy with a temperature of 22°C and humidity around 60%. The population of Tokyo as of 2024 is approximately 13.96 million people.","logprobs":[],"sequence_number":43}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"msg_tmp_549gr6ynx6f","content_index":0,"part":{"type":"output_text","text":"The current weather in Tokyo is partly cloudy with a temperature of 22°C and humidity around 60%. The population of Tokyo as of 2024 is approximately 13.96 million people.","annotations":[],"logprobs":[]},"sequence_number":44}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"msg_tmp_549gr6ynx6f","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"The current weather in Tokyo is partly cloudy with a temperature of 22°C and humidity around 60%. The population of Tokyo as of 2024 is approximately 13.96 million people.","annotations":[],"logprobs":[]}]},"sequence_number":45}
+
+data: {"type":"response.completed","response":{"id":"gen-1773671607-FQ2oRK3m3bZTS3LiJIL5","object":"response","created_at":1773671607,"model":"openai/gpt-4.1-mini-2025-04-14","status":"completed","completed_at":1773671607,"output":[{"id":"msg_tmp_549gr6ynx6f","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"The current weather in Tokyo is partly cloudy with a temperature of 22°C and humidity around 60%. The population of Tokyo as of 2024 is approximately 13.96 million people.","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[{"type":"function","name":"get_weather","description":"Get the current weather for a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null},{"type":"function","name":"get_population","description":"Get the population of a city.","parameters":{"type":"object","properties":{"city":{"type":"string","description":"The city name."}},"required":["city"],"additionalProperties":false},"strict":null}],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Always use the provided tools to answer questions. Call each tool separately.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":182,"input_tokens_details":{"cached_tokens":0},"output_tokens":41,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":223,"cost":0.0001384,"is_byok":false,"cost_details":{"upstream_inference_cost":0.0001384,"upstream_inference_input_cost":0.0000728,"upstream_inference_output_cost":0.0000656}}},"sequence_number":46}
+
+data: [DONE]
+

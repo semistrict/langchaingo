@@ -1,0 +1,165 @@
+httprr trace v1
+468 5901
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 271
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"openai/gpt-4.1-mini","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"My favorite color is purple. Remember that."}]}],"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 5381
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 15:00:04 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=4,cfOrigin;dur=0,cfWorker;dur=281
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773673204-NvnQ9kBV1Bbz5ljONi9u","object":"response","created_at":1773673204,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773673204-NvnQ9kBV1Bbz5ljONi9u","object":"response","created_at":1773673204,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"msg_tmp_amckhtmnynt","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":3}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":"Got","logprobs":[],"sequence_number":4}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":" it","logprobs":[],"sequence_number":5}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":"!","logprobs":[],"sequence_number":6}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":" Your","logprobs":[],"sequence_number":7}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":" favorite","logprobs":[],"sequence_number":8}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":" color","logprobs":[],"sequence_number":9}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":" is","logprobs":[],"sequence_number":10}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":" purple","logprobs":[],"sequence_number":11}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"delta":".","logprobs":[],"sequence_number":12}
+
+data: {"type":"response.output_text.done","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"text":"Got it! Your favorite color is purple.","logprobs":[],"sequence_number":13}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"msg_tmp_amckhtmnynt","content_index":0,"part":{"type":"output_text","text":"Got it! Your favorite color is purple.","annotations":[],"logprobs":[]},"sequence_number":14}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"msg_tmp_amckhtmnynt","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"Got it! Your favorite color is purple.","annotations":[],"logprobs":[]}]},"sequence_number":15}
+
+data: {"type":"response.completed","response":{"id":"gen-1773673204-NvnQ9kBV1Bbz5ljONi9u","object":"response","created_at":1773673204,"model":"openai/gpt-4.1-mini-2025-04-14","status":"completed","completed_at":1773673204,"output":[{"id":"msg_tmp_amckhtmnynt","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Got it! Your favorite color is purple.","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":34,"input_tokens_details":{"cached_tokens":0},"output_tokens":10,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":44,"cost":0.0000296,"is_byok":false,"cost_details":{"upstream_inference_cost":0.0000296,"upstream_inference_input_cost":0.0000136,"upstream_inference_output_cost":0.000016}}},"sequence_number":16}
+
+data: [DONE]
+
+678 5438
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 481
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"openai/gpt-4.1-mini","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"My favorite color is purple. Remember that."}]},{"type":"message","role":"assistant","content":[{"type":"output_text","text":"Got it! Your favorite color is purple."}]},{"type":"message","role":"user","content":[{"type":"input_text","text":"What is 2+2?"}]}],"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 4918
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 15:00:05 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=3,cfOrigin;dur=0,cfWorker;dur=146
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773673205-f3ZyS5ne8yeAcq1Zedcf","object":"response","created_at":1773673205,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773673205-f3ZyS5ne8yeAcq1Zedcf","object":"response","created_at":1773673205,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"msg_tmp_4mdv8xklmq6","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":3}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"delta":"2","logprobs":[],"sequence_number":4}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"delta":"+","logprobs":[],"sequence_number":5}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"delta":"2","logprobs":[],"sequence_number":6}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"delta":" is","logprobs":[],"sequence_number":7}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"delta":" ","logprobs":[],"sequence_number":8}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"delta":"4","logprobs":[],"sequence_number":9}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"delta":".","logprobs":[],"sequence_number":10}
+
+data: {"type":"response.output_text.done","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"text":"2+2 is 4.","logprobs":[],"sequence_number":11}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"msg_tmp_4mdv8xklmq6","content_index":0,"part":{"type":"output_text","text":"2+2 is 4.","annotations":[],"logprobs":[]},"sequence_number":12}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"msg_tmp_4mdv8xklmq6","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"2+2 is 4.","annotations":[],"logprobs":[]}]},"sequence_number":13}
+
+data: {"type":"response.completed","response":{"id":"gen-1773673205-f3ZyS5ne8yeAcq1Zedcf","object":"response","created_at":1773673205,"model":"openai/gpt-4.1-mini-2025-04-14","status":"completed","completed_at":1773673206,"output":[{"id":"msg_tmp_4mdv8xklmq6","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"2+2 is 4.","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":58,"input_tokens_details":{"cached_tokens":0},"output_tokens":8,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":66,"cost":0.000036,"is_byok":false,"cost_details":{"upstream_inference_cost":0.000036,"upstream_inference_input_cost":0.0000232,"upstream_inference_output_cost":0.0000128}}},"sequence_number":14}
+
+data: [DONE]
+
+873 5375
+POST https://openrouter.ai/api/v1/responses HTTP/1.1
+Host: openrouter.ai
+User-Agent: langchaingo-httprr
+Content-Length: 676
+Authorization: Bearer test-api-key
+Content-Type: application/json
+
+{"model":"openai/gpt-4.1-mini","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"My favorite color is purple. Remember that."}]},{"type":"message","role":"assistant","content":[{"type":"output_text","text":"Got it! Your favorite color is purple."}]},{"type":"message","role":"user","content":[{"type":"input_text","text":"What is 2+2?"}]},{"type":"message","role":"assistant","content":[{"type":"output_text","text":"2+2 is 4."}]},{"type":"message","role":"user","content":[{"type":"input_text","text":"What is my favorite color?"}]}],"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","store":false,"stream":true}HTTP/2.0 200 OK
+Content-Length: 4855
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache
+Content-Type: text/event-stream
+Date: Mon, 16 Mar 2026 15:00:06 GMT
+Permissions-Policy: payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")
+Referrer-Policy: no-referrer, strict-origin-when-cross-origin
+Server: cloudflare
+Server-Timing: cfEdge;dur=3,cfOrigin;dur=0,cfWorker;dur=224
+X-Content-Type-Options: nosniff
+
+: OPENROUTER PROCESSING
+
+data: {"type":"response.created","response":{"id":"gen-1773673206-UUv4Yzugmtaa5nVlZ2Wh","object":"response","created_at":1773673206,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"gen-1773673206-UUv4Yzugmtaa5nVlZ2Wh","object":"response","created_at":1773673206,"model":"openai/gpt-4.1-mini-2025-04-14","status":"in_progress","completed_at":null,"output":[],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":null},"sequence_number":1}
+
+data: {"type":"response.output_item.added","output_index":0,"item":{"id":"msg_tmp_dm9whiql12","type":"message","status":"in_progress","role":"assistant","content":[]},"sequence_number":2}
+
+data: {"type":"response.content_part.added","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"part":{"type":"output_text","text":"","annotations":[],"logprobs":[]},"sequence_number":3}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"delta":"Your","logprobs":[],"sequence_number":4}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"delta":" favorite","logprobs":[],"sequence_number":5}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"delta":" color","logprobs":[],"sequence_number":6}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"delta":" is","logprobs":[],"sequence_number":7}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"delta":" purple","logprobs":[],"sequence_number":8}
+
+data: {"type":"response.output_text.delta","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"delta":".","logprobs":[],"sequence_number":9}
+
+data: {"type":"response.output_text.done","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"text":"Your favorite color is purple.","logprobs":[],"sequence_number":10}
+
+data: {"type":"response.content_part.done","output_index":0,"item_id":"msg_tmp_dm9whiql12","content_index":0,"part":{"type":"output_text","text":"Your favorite color is purple.","annotations":[],"logprobs":[]},"sequence_number":11}
+
+data: {"type":"response.output_item.done","output_index":0,"item":{"id":"msg_tmp_dm9whiql12","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"Your favorite color is purple.","annotations":[],"logprobs":[]}]},"sequence_number":12}
+
+data: {"type":"response.completed","response":{"id":"gen-1773673206-UUv4Yzugmtaa5nVlZ2Wh","object":"response","created_at":1773673206,"model":"openai/gpt-4.1-mini-2025-04-14","status":"completed","completed_at":1773673207,"output":[{"id":"msg_tmp_dm9whiql12","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Your favorite color is purple.","annotations":[],"logprobs":[]}]}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"max_output_tokens":null,"temperature":1,"top_p":1,"presence_penalty":0,"frequency_penalty":0,"top_logprobs":0,"max_tool_calls":null,"metadata":{},"background":false,"previous_response_id":null,"service_tier":"auto","truncation":"disabled","store":false,"instructions":"You are a helpful assistant. Be concise. Answer in one sentence.","text":{"format":{"type":"text"}},"reasoning":null,"usage":{"input_tokens":79,"input_tokens_details":{"cached_tokens":0},"output_tokens":7,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":86,"cost":0.0000428,"is_byok":false,"cost_details":{"upstream_inference_cost":0.0000428,"upstream_inference_input_cost":0.0000316,"upstream_inference_output_cost":0.0000112}}},"sequence_number":13}
+
+data: [DONE]
+
