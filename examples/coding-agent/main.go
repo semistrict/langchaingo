@@ -11,10 +11,12 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/bubbles/textarea"
@@ -22,30 +24,67 @@ import (
 	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/tmc/langchaingo/examples/coding-agent/sandbox"
+	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/openai"
 )
 
 const defaultModel = "gpt-5.4"
 
-const systemPrompt = `You are a coding agent. You have access to tools for reading files, listing directories, running shell commands, searching files, and applying patches.
+func buildSystemPrompt() string {
+	now := time.Now()
+	zone, _ := now.Zone()
+	return fmt.Sprintf(`You are a coding agent. You have access to tools for reading files, listing directories, running shell commands, searching files, and applying patches.
+
+Current date: %s
+Timezone: %s
 
 When the user asks you to perform a task:
 1. Understand the request
 2. Use the available tools to explore the codebase and make changes
 3. Verify your changes work by running tests or checking output
 
-Be concise in your responses. Show your work by describing what you're doing.`
+Be concise in your responses. Show your work by describing what you're doing.`,
+		now.Format("2006-01-02 (Monday)"), zone)
+}
 
 func main() {
-	model := defaultModel
-	if m := os.Getenv("MODEL"); m != "" {
-		model = m
+	modelFlag := flag.String("model", "", "model name (default: gpt-5.4 for chatgpt, gemini-3.1-flash-lite for openrouter)")
+	backend := flag.String("backend", "chatgpt", "backend: chatgpt or openrouter")
+	resumeID := flag.String("r", "", "resume a previous session by UUID")
+	flag.Parse()
+
+	model := *modelFlag
+	if model == "" {
+		if m := os.Getenv("MODEL"); m != "" {
+			model = m
+		}
 	}
 
-	llm, err := openai.New(
-		openai.WithChatGPTAuth(""),
-		openai.WithModel(model),
-	)
+	var opts []openai.Option
+	switch *backend {
+	case "openrouter":
+		key := os.Getenv("OPENROUTER_API_KEY")
+		if key == "" {
+			log.Fatal("OPENROUTER_API_KEY not set")
+		}
+		opts = append(opts,
+			openai.WithToken(key),
+			openai.WithBaseURL("https://openrouter.ai/api/v1"),
+		)
+		if model == "" {
+			model = "google/gemini-3.1-flash-lite-preview"
+		}
+	case "chatgpt", "":
+		opts = append(opts, openai.WithChatGPTAuth(""))
+		if model == "" {
+			model = defaultModel
+		}
+	default:
+		log.Fatalf("unknown backend: %s (use chatgpt or openrouter)", *backend)
+	}
+	opts = append(opts, openai.WithModel(model))
+
+	llm, err := openai.New(opts...)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,10 +98,46 @@ func main() {
 
 	sb := sandbox.NewLocal()
 
-	// If a prompt is passed as args, run non-interactively.
-	if len(os.Args) > 1 {
-		prompt := strings.Join(os.Args[1:], " ")
-		conv := NewConversation(systemPrompt, sb)
+	store, err := OpenStore()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer store.Close()
+
+	// Create or resume a session.
+	var conv *Conversation
+	if *resumeID != "" {
+		exists, err := store.SessionExists(*resumeID)
+		if err != nil || !exists {
+			log.Fatalf("session %s not found", *resumeID)
+		}
+		// Load backend/model from saved session.
+		savedBackend, savedModel, err := store.GetSessionInfo(*resumeID)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if model == "" || model == defaultModel {
+			model = savedModel
+		}
+		_ = savedBackend // backend already set from flags or could override
+		conv, err = ResumeConversation(sb, store, *resumeID)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Fprintf(os.Stderr, "Resumed session %s (%d messages)\n", *resumeID, conv.MessageCount())
+	}
+
+	// If args remain after flags, run non-interactively.
+	if flag.NArg() > 0 {
+		prompt := strings.Join(flag.Args(), " ")
+		if conv == nil {
+			sessionID, err := store.NewSession(*backend, model)
+			if err != nil {
+				log.Fatal(err)
+			}
+			conv = NewConversation(buildSystemPrompt(), sb, store, sessionID)
+			fmt.Fprintf(os.Stderr, "Session: %s\n", sessionID)
+		}
 		renderer, _ := glamour.NewTermRenderer(glamour.WithAutoStyle(), glamour.WithWordWrap(100))
 		var textBuf strings.Builder
 		err := conv.RunTurn(ctx, session, sb, prompt, func(ev AgentEvent) {
@@ -101,12 +176,20 @@ func main() {
 	}
 
 	// Interactive TUI mode.
-	m := newTUIModel(session, sb)
+	if conv == nil {
+		sessionID, err := store.NewSession(*backend, model)
+		if err != nil {
+			log.Fatal(err)
+		}
+		conv = NewConversation(buildSystemPrompt(), sb, store, sessionID)
+	}
+	m := newTUIModel(session, sb, conv, *backend, model)
 	p := tea.NewProgram(&m, tea.WithAltScreen(), tea.WithMouseCellMotion())
 	m.program = p
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Fprintf(os.Stderr, "To resume: %s -r %s\n", os.Args[0], conv.SessionID())
 }
 
 // --- Styles matching Codex TUI ---
@@ -322,7 +405,11 @@ type tuiModel struct {
 	totalInputTok  int
 	totalOutputTok int
 	totalCachedTok int
-	shellMode      bool
+	shellMode        bool
+	cancelRun        context.CancelFunc // cancels the current agent run
+	pendingToolCalls []string           // tool call IDs awaiting results
+	backendName      string             // "chatgpt" or "openrouter"
+	defaultModel     string             // model from startup flags
 	// Text selection state.
 	selecting bool
 	hasSelection bool
@@ -330,7 +417,7 @@ type tuiModel struct {
 	selEnd    [2]int
 }
 
-func newTUIModel(session *openai.ResponsesSession, sb sandbox.Sandbox) tuiModel {
+func newTUIModel(session *openai.ResponsesSession, sb sandbox.Sandbox, conv *Conversation, backendName, model string) tuiModel {
 	ta := textarea.New()
 	ta.Prompt = ""
 	ta.Placeholder = "Type a message... (ctrl+c to quit)"
@@ -355,15 +442,38 @@ func newTUIModel(session *openai.ResponsesSession, sb sandbox.Sandbox) tuiModel 
 		glamour.WithWordWrap(100),
 	)
 
-	return tuiModel{
-		session:    session,
-		sb:         sb,
-		conv:       NewConversation(systemPrompt, sb),
-		textarea:   ta,
-		follow:     true,
-		status:     "ready",
-		mdRenderer: renderer,
+	m := tuiModel{
+		session:      session,
+		sb:           sb,
+		conv:         conv,
+		textarea:     ta,
+		follow:       true,
+		status:       "ready",
+		mdRenderer:   renderer,
+		backendName:  backendName,
+		defaultModel: model,
 	}
+
+	// Replay messages from the loaded conversation into the transcript.
+	for _, msg := range conv.MessagesAfterLastCompaction() {
+		switch msg.Role {
+		case llms.ChatMessageTypeHuman:
+			for _, part := range msg.Parts {
+				if tc, ok := part.(llms.TextContent); ok {
+					rendered := userBgStyle.Padding(0, 1).Render("› " + tc.Text)
+					m.sections = append(m.sections, rendered)
+				}
+			}
+		case llms.ChatMessageTypeAI:
+			for _, part := range msg.Parts {
+				if tc, ok := part.(llms.TextContent); ok && tc.Text != "" {
+					m.sections = append(m.sections, m.renderMarkdown(tc.Text))
+				}
+			}
+		}
+	}
+
+	return m
 }
 
 func (m *tuiModel) Init() tea.Cmd {
@@ -409,6 +519,20 @@ func (m *tuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Any keystroke clears text selection.
 		m.hasSelection = false
 
+		// Esc interrupts the current agent run.
+		if msg.Type == tea.KeyEsc && m.running && m.cancelRun != nil {
+			m.cancelRun()
+			m.cancelRun = nil
+			m.running = false
+			m.flushMarkdown()
+			// Send failure results for any pending tool calls.
+			m.conv.CancelPendingToolCalls(m.pendingToolCalls)
+			m.pendingToolCalls = nil
+			m.sections = append(m.sections, faintStyle.Render("(interrupted)"))
+			m.rebuildLines()
+			return m, nil
+		}
+
 		// Backspace at empty input exits shell mode (as if deleting the !).
 		if msg.Type == tea.KeyBackspace && m.shellMode && strings.TrimSpace(m.textarea.Value()) == "" {
 			m.shellMode = false
@@ -443,10 +567,12 @@ func (m *tuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.shellMode {
 				m.sections = append(m.sections, lipgloss.NewStyle().Foreground(shellColor).Render("! ")+text)
 				m.rebuildLines()
+				m.running = true
 				m.status = "running..."
 				sb := m.sb
+				ctx, cancel := context.WithCancel(context.Background())
+				m.cancelRun = cancel
 				cmds = append(cmds, func() tea.Msg {
-					ctx := context.Background()
 					result, err := sb.Shell(ctx, []string{"bash", "-lc", text}, "", 30000)
 					output := result.Output
 					if err != nil {
@@ -454,6 +580,23 @@ func (m *tuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 					return shellResultMsg{command: text, output: output, exit: result.ExitCode}
 				})
+				break
+			}
+
+			// Handle /model command.
+			if strings.HasPrefix(text, "/model") {
+				newModel := strings.TrimSpace(strings.TrimPrefix(text, "/model"))
+				if newModel == "" {
+					current := m.conv.Model
+					if current == "" {
+						current = "(session default)"
+					}
+					m.sections = append(m.sections, faintStyle.Render("Current model: "+current))
+				} else {
+					m.conv.Model = newModel
+					m.sections = append(m.sections, faintStyle.Render("Switched to model: "+newModel))
+				}
+				m.rebuildLines()
 				break
 			}
 
@@ -467,8 +610,9 @@ func (m *tuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				session := m.session
 				sb := m.sb
 				conv := m.conv
+				ctx, cancel := context.WithCancel(context.Background())
+				m.cancelRun = cancel
 				cmds = append(cmds, func() tea.Msg {
-					ctx := context.Background()
 					path, err := conv.CompactAndResume(ctx, session, sb, func(ev AgentEvent) {
 						if p != nil {
 							p.Send(agentEventMsg(ev))
@@ -491,8 +635,9 @@ func (m *tuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			session := m.session
 			sb := m.sb
 			conv := m.conv
+			ctx, cancel := context.WithCancel(context.Background())
+			m.cancelRun = cancel
 			cmds = append(cmds, func() tea.Msg {
-				ctx := context.Background()
 				_ = conv.RunTurn(ctx, session, sb, text, func(ev AgentEvent) {
 					if p != nil {
 						p.Send(agentEventMsg(ev))
@@ -516,14 +661,18 @@ func (m *tuiModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.mdBuf.WriteString(ev.Text)
 			m.rebuildLines()
 		case "tool_call":
-			// Flush any buffered assistant text before the tool call.
 			m.flushMarkdown()
 			m.lastToolName = ev.ToolName
 			m.lastToolArgs = ev.ToolArgs
+			if ev.ToolCallID != "" {
+				m.pendingToolCalls = append(m.pendingToolCalls, ev.ToolCallID)
+			}
 			m.sections = append(m.sections, formatToolCallLine(ev.ToolName, ev.ToolArgs))
 			m.rebuildLines()
 			m.status = fmt.Sprintf("running %s...", ev.ToolName)
 		case "tool_result":
+			// Remove from pending.
+			m.pendingToolCalls = nil
 			m.sections = append(m.sections, formatToolOutput(ev.ToolOutput, m.lastToolName))
 			m.rebuildLines()
 			m.status = "thinking..."
@@ -845,7 +994,15 @@ func (m *tuiModel) View() string {
 			statusLeft = "ready"
 		}
 	}
-	statusRight := fmt.Sprintf("%d msgs", m.conv.MessageCount())
+	activeModel := m.conv.Model
+	if activeModel == "" {
+		activeModel = m.defaultModel
+	}
+	sid := m.conv.SessionID()
+	if len(sid) > 8 {
+		sid = sid[:8]
+	}
+	statusRight := fmt.Sprintf("%s %s:%s %d msgs", sid, m.backendName, activeModel, m.conv.MessageCount())
 	if m.totalInputTok > 0 || m.totalOutputTok > 0 {
 		tok := fmt.Sprintf("%s in / %s out", formatTokens(m.totalInputTok), formatTokens(m.totalOutputTok))
 		if m.totalCachedTok > 0 {
