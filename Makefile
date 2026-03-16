@@ -22,6 +22,7 @@ help:
 	@echo "Other:"
 	@echo "  tinygo-build   - Try building the core library with tinygo"
 	@echo "  tinygo-wasm-build - Try building the core library as WASM with tinygo"
+	@echo "  wasm-build     - Build the core library as WASM with Go"
 	@echo "  build-examples - Build all example projects to verify they compile"
 	@echo "  update-examples - Update langchaingo version in all examples"
 	@echo "  docs           - Generate documentation"
@@ -123,6 +124,19 @@ tinygo-wasm-build:
 	@echo "Building WASM with tinygo (using go1.25 from $(GO125_ROOT))..."
 	PATH="$(GO125_ROOT)/bin:$(PATH)" GOROOT="$(GO125_ROOT)" tinygo build -target=wasi -tags="$(TINYGO_TAGS)" -o bin/langchaingo-tinygo.wasm ./cmd/tinygo-check
 	@ls -lh bin/langchaingo-tinygo.wasm
+
+.PHONY: wasm-build
+wasm-build:
+	@echo "Building WASM with Go..."
+	GOOS=wasip1 GOARCH=wasm go build -tags="nogonja,nosprig,nostarlark" -o bin/langchaingo.wasm ./cmd/tinygo-check
+	@ls -lh bin/langchaingo.wasm
+
+.PHONY: wasm-build-nodeps
+wasm-build-nodeps:
+	$(eval TINYGO_TAGS := noaws,nomilvus,nogoogle,nochroma,nopinecone,noweaviate,nosqlite3,nosprig,nomongo,noscraper,nomysql,nopgx,noopensearch,noazure,noqdrant,noredisvector,nogonja,nostarlark)
+	@echo "Building WASM with Go (no optional deps)..."
+	GOOS=wasip1 GOARCH=wasm go build -tags="$(TINYGO_TAGS)" -o bin/langchaingo-nodeps.wasm ./cmd/tinygo-check
+	@ls -lh bin/langchaingo-nodeps.wasm
 
 .PHONY: build-examples
 build-examples:
