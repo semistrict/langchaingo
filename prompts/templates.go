@@ -40,7 +40,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/Masterminds/sprig/v3"
 	"github.com/tmc/langchaingo/prompts/internal/fstring"
 	sanitization "github.com/tmc/langchaingo/prompts/internal/sanitization"
 )
@@ -69,8 +68,24 @@ type interpolator func(template string, values map[string]any) (string, error)
 // defaultFormatterMapping is the default mapping of TemplateFormat to interpolator.
 var defaultFormatterMapping = map[TemplateFormat]interpolator{ //nolint:gochecknoglobals
 	TemplateFormatGoTemplate: interpolateGoTemplate,
-	TemplateFormatJinja2:     interpolateJinja2,
 	TemplateFormatFString:    fstring.Format,
+}
+
+// fsRenderer is a function that renders a template from a filesystem.
+type fsRenderer func(fsys fs.FS, name string, values map[string]any) (string, error)
+
+// fsRendererMapping maps template formats to filesystem-based renderers.
+var fsRendererMapping = map[TemplateFormat]fsRenderer{} //nolint:gochecknoglobals
+
+// registerFormatter adds a formatter to the default mapping.
+// Used by optional template backends (e.g. jinja2) via init().
+func registerFormatter(format TemplateFormat, fn interpolator) {
+	defaultFormatterMapping[format] = fn
+}
+
+// registerFSRenderer adds a filesystem renderer to the mapping.
+func registerFSRenderer(format TemplateFormat, fn fsRenderer) {
+	fsRendererMapping[format] = fn
 }
 
 // interpolateGoTemplate interpolates the given template with the given values by using
@@ -78,7 +93,7 @@ var defaultFormatterMapping = map[TemplateFormat]interpolator{ //nolint:gocheckn
 func interpolateGoTemplate(tmpl string, values map[string]any) (string, error) {
 	parsedTmpl, err := template.New("template").
 		Option("missingkey=error").
-		Funcs(sprig.TxtFuncMap()).
+		Funcs(sprigFuncMap()).
 		Parse(tmpl)
 	if err != nil {
 		return "", fmt.Errorf("template parse failure: %w", err)
@@ -217,9 +232,11 @@ func RenderTemplateFS(fsys fs.FS, name string, tmplFormat TemplateFormat, values
 		}
 		valuesToUse = safeValues
 	}
+	// Check registered FS renderers first (e.g. jinja2)
+	if renderer, ok := fsRendererMapping[tmplFormat]; ok {
+		return renderer(fsys, name, valuesToUse)
+	}
 	switch tmplFormat {
-	case TemplateFormatJinja2:
-		return renderJinja2WithFS(fsys, name, valuesToUse)
 	case TemplateFormatGoTemplate:
 		return renderGoTemplateWithFS(fsys, name, valuesToUse)
 	case TemplateFormatFString:

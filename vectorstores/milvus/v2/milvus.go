@@ -1,3 +1,5 @@
+//go:build !nomilvus
+
 // Package v2 provides a vectorstore implementation for Milvus using the new SDK.
 // This package uses github.com/milvus-io/milvus/client/v2 which is actively maintained
 // and replaces the archived milvus-sdk-go/v2 package.

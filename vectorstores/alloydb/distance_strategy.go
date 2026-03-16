@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 package alloydb
 
 import "fmt"

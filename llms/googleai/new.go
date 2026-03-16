@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 // package googleai implements a langchaingo provider for Google AI LLMs.
 // See https://ai.google.dev/ for more details.
 package googleai

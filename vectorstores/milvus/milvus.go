@@ -1,3 +1,5 @@
+//go:build !nomilvus
+
 // Package milvus provides a vectorstore implementation for Milvus.
 //
 // Deprecated: This package uses github.com/milvus-io/milvus-sdk-go/v2 which has been

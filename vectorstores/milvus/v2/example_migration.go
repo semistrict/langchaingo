@@ -1,6 +1,6 @@
 // Package example demonstrates migration from milvus v1 package to v2 package.
 //
-//go:build ignore
+//go:build ignore && !nomilvus
 
 // This file provides examples of how to migrate existing code from the deprecated
 // vectorstores/milvus package to the new vectorstores/milvus/v2 package.

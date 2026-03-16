@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 // package vertex implements a langchaingo provider for Google Vertex AI LLMs,
 // including the new Gemini models.
 // See https://cloud.google.com/vertex-ai for more details.

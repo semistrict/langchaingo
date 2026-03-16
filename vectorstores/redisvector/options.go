@@ -1,3 +1,5 @@
+//go:build !noredisvector
+
 package redisvector
 
 import (

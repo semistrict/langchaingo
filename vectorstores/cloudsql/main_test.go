@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 package cloudsql_test
 
 import (

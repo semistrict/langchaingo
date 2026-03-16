@@ -1,3 +1,5 @@
+//go:build !nopgx
+
 package pgvector_test
 
 import (

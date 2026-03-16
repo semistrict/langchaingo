@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 // Package googleai provides caching support for Google AI models.
 package googleai
 

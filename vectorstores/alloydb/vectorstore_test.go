@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 //nolint:paralleltest
 package alloydb_test
 

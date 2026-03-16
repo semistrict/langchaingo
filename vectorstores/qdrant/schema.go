@@ -1,3 +1,5 @@
+//go:build !noqdrant
+
 // This file contains the partial schema of the Qdrant REST API.
 // i.e. Only fields that are used by the application are specified.
 // For a comprehensive reference of the Qdrant REST API

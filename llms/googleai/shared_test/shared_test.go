@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 // nolint
 package shared_test
 

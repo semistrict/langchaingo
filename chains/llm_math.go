@@ -11,8 +11,6 @@ import (
 	"github.com/tmc/langchaingo/memory"
 	"github.com/tmc/langchaingo/prompts"
 	"github.com/tmc/langchaingo/schema"
-	"go.starlark.net/lib/math"
-	"go.starlark.net/starlark"
 )
 
 //go:embed prompts/llm_math.txt
@@ -80,11 +78,3 @@ func (c LLMMathChain) processLLMResult(llmOutput string) (string, error) {
 	return "", fmt.Errorf("unknown format from LLM: %s", llmOutput)
 }
 
-func (c LLMMathChain) evaluateExpression(expression string) (string, error) {
-	expression = strings.TrimSpace(expression)
-	v, err := starlark.Eval(&starlark.Thread{Name: "main"}, "input", expression, math.Module.Members)
-	if err != nil {
-		return "", err
-	}
-	return v.String(), nil
-}

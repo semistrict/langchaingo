@@ -1,3 +1,5 @@
+//go:build !nomilvus
+
 package v2
 
 import (

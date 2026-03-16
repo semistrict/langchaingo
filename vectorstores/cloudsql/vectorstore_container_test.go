@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 // nolint
 package cloudsql_test
 

@@ -1,3 +1,5 @@
+//go:build !nomysql
+
 package dolt_test
 
 import (

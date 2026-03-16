@@ -6,15 +6,13 @@ import (
 	"io/fs"
 	"strings"
 	"text/template"
-
-	"github.com/Masterminds/sprig/v3"
 )
 
 // renderGoTemplateWithFS renders a Go template from the filesystem.
 func renderGoTemplateWithFS(fsys fs.FS, name string, values map[string]any) (string, error) {
 	tmpl, err := template.New(name).
 		Option("missingkey=error").
-		Funcs(sprig.TxtFuncMap()).
+		Funcs(sprigFuncMap()).
 		ParseFS(fsys, name)
 	if err != nil {
 		// Check if it's a file not found error

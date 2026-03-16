@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 //nolint:all
 package googleai
 

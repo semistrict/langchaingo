@@ -20,6 +20,8 @@ help:
 	@echo "  lint-architecture - Check architectural rules and patterns"
 	@echo ""
 	@echo "Other:"
+	@echo "  tinygo-build   - Try building the core library with tinygo"
+	@echo "  tinygo-wasm-build - Try building the core library as WASM with tinygo"
 	@echo "  build-examples - Build all example projects to verify they compile"
 	@echo "  update-examples - Update langchaingo version in all examples"
 	@echo "  docs           - Generate documentation"
@@ -104,6 +106,23 @@ clean: clean-lint-cache
 .PHONY: clean-lint-cache
 clean-lint-cache:
 	golangci-lint cache clean
+
+.PHONY: tinygo-build
+tinygo-build:
+	@command -v tinygo >/dev/null 2>&1 || { echo >&2 "tinygo not found. Install from https://tinygo.org/getting-started/install/"; exit 1; }
+	$(eval GO125_ROOT := $(shell /opt/homebrew/opt/go@1.25/bin/go env GOROOT))
+	$(eval TINYGO_TAGS := noaws,nomilvus,nogoogle,nochroma,nopinecone,noweaviate,nosqlite3,nosprig,nomongo,noscraper,nomysql,nopgx,noopensearch,noazure,noqdrant,noredisvector,nogonja,nostarlark)
+	@echo "Building with tinygo (using go1.25 from $(GO125_ROOT))..."
+	PATH="$(GO125_ROOT)/bin:$(PATH)" GOROOT="$(GO125_ROOT)" tinygo build -tags="$(TINYGO_TAGS)" -o /dev/null ./cmd/tinygo-check
+
+.PHONY: tinygo-wasm-build
+tinygo-wasm-build:
+	@command -v tinygo >/dev/null 2>&1 || { echo >&2 "tinygo not found. Install from https://tinygo.org/getting-started/install/"; exit 1; }
+	$(eval GO125_ROOT := $(shell /opt/homebrew/opt/go@1.25/bin/go env GOROOT))
+	$(eval TINYGO_TAGS := noaws,nomilvus,nogoogle,nochroma,nopinecone,noweaviate,nosqlite3,nosprig,nomongo,noscraper,nomysql,nopgx,noopensearch,noazure,noqdrant,noredisvector,nogonja,nostarlark)
+	@echo "Building WASM with tinygo (using go1.25 from $(GO125_ROOT))..."
+	PATH="$(GO125_ROOT)/bin:$(PATH)" GOROOT="$(GO125_ROOT)" tinygo build -target=wasi -tags="$(TINYGO_TAGS)" -o bin/langchaingo-tinygo.wasm ./cmd/tinygo-check
+	@ls -lh bin/langchaingo-tinygo.wasm
 
 .PHONY: build-examples
 build-examples:

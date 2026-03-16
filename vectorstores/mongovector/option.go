@@ -1,3 +1,5 @@
+//go:build !nomongo
+
 package mongovector
 
 // Option sets mongovector-specific options when constructing a Store.

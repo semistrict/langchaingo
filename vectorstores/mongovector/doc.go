@@ -1,3 +1,5 @@
+//go:build !nomongo
+
 // Package mongovector implements a vector store using MongoDB as the backend.
 //
 // The mongovector package provide a way for users to read and write to a

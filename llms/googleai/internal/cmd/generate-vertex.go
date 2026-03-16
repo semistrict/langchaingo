@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 // Code generator for vertex.go from googleai.go
 // nolint
 package main

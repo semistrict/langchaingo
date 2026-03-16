@@ -1,3 +1,5 @@
+//go:build !nogoogle
+
 package cloudsqlutil
 
 import (

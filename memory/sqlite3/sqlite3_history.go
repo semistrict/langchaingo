@@ -1,3 +1,5 @@
+//go:build !nosqlite3
+
 // Package sqlite3 adds support for
 // chat message history using sqlite3.
 package sqlite3

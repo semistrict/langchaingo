@@ -1,3 +1,5 @@
+//go:build !nogonja
+
 package prompts
 
 import (
@@ -10,6 +12,11 @@ import (
 	"github.com/nikolalohinski/gonja/config"
 	"github.com/tmc/langchaingo/prompts/internal/loader"
 )
+
+func init() {
+	registerFormatter(TemplateFormatJinja2, interpolateJinja2)
+	registerFSRenderer(TemplateFormatJinja2, renderJinja2WithFS)
+}
 
 var (
 	secureGonjaEnv     *gonja.Environment

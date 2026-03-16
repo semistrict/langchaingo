@@ -1,3 +1,5 @@
+//go:build !nosqlite3
+
 package sqlite3_test
 
 import (

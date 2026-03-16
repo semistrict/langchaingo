@@ -1,3 +1,5 @@
+//go:build !noscraper
+
 package scraper
 
 type Options func(*Scraper)

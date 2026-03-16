@@ -1,3 +1,5 @@
+//go:build !nochroma
+
 package chroma
 
 import (

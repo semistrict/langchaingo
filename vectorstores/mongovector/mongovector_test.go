@@ -1,3 +1,5 @@
+//go:build !nomongo
+
 // This file contains integration tests for the MongoDB Atlas vector store implementation.
 // These tests demonstrate best practices for:
 // - Using testcontainers for MongoDB Atlas Local

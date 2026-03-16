@@ -1,3 +1,5 @@
+//go:build !nopinecone
+
 package pinecone
 
 import (

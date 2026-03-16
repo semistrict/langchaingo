@@ -1,3 +1,5 @@
+//go:build !noopensearch
+
 package opensearch
 
 import (

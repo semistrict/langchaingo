@@ -1,3 +1,5 @@
+//go:build !nomysql
+
 package mysql
 
 import (
