@@ -34,3 +34,4 @@ embeddings/cybertron/models/*
 examples/cybertron-embedding-example/models/*
 /.claude
 /bin/
+.agent/
