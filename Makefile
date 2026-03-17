@@ -24,6 +24,7 @@ help:
 	@echo "  tinygo-wasm-build - Try building the core library as WASM with tinygo"
 	@echo "  wasm-build     - Build the core library as WASM with Go"
 	@echo "  coding-agent   - Build the coding agent into bin/"
+	@echo "  responses-mock - Build the Responses API mock server into bin/"
 	@echo "  build-examples - Build all example projects to verify they compile"
 	@echo "  update-examples - Update langchaingo version in all examples"
 	@echo "  docs           - Generate documentation"
@@ -142,6 +143,10 @@ wasm-build-nodeps:
 .PHONY: coding-agent
 coding-agent:
 	cd examples/coding-agent && go build -o ../../bin/coding-agent .
+
+.PHONY: responses-mock
+responses-mock:
+	go build -o bin/responses-mock ./cmd/responses-mock
 
 .PHONY: build-examples
 build-examples:
